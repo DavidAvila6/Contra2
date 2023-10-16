@@ -7,8 +7,12 @@ public class OakTree extends Tree {
     private int treeWidth;
     private int treeX;
     private int treeY;
-
-    public OakTree() {
+    
+   
+    
+    public OakTree(int treeX, int treeY, int treeWidth, int treeHeight) {
+        // Constructor con parámetros
+        super(treeX, treeY, treeWidth, treeHeight);
         this.treeHeight = 100;
         this.treeWidth = 50;
         this.treeX = 200;
@@ -16,7 +20,7 @@ public class OakTree extends Tree {
         
         Random random = new Random();
         this.treeX = random.nextInt(800) + 800;  // Ajusta según el tamaño de tu ventana
-        this.treeY = random.nextInt(600 - treeHeight);
+        this.treeY = 450;
     }
 
     public int getTreeHeight() {

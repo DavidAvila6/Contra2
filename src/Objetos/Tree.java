@@ -5,11 +5,15 @@ public abstract class Tree implements Cloneable {
     private int treeWidth;
     private int treeX;
     private int treeY;
-
-    public Tree() {
-        // Constructor por defecto o común para inicialización
+    
+    public Tree(int treeX, int treeY, int treeWidth, int treeHeight) {
+        this.treeX = treeX;
+        this.treeY = treeY;
+        this.treeWidth = treeWidth;
+        this.treeHeight = treeHeight;
     }
 
+    
     public int getTreeHeight() {
         return treeHeight;
     }

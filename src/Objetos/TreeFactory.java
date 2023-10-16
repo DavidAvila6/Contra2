@@ -20,7 +20,7 @@ public class TreeFactory {
 
     public static void loadCache() {
         // Carga inicial de diferentes tipos de árboles en el cache
-        Tree oakTree = new OakTree();
+    	OakTree oakTree = new OakTree(0, 0, 0, 0);
         treeCache.put("oak", oakTree);
 
         // Agrega más tipos de árboles según sea necesario
