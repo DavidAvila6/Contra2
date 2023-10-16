@@ -6,6 +6,7 @@ import java.awt.event.*;
 
 import Objetos.OakTree;
 import Objetos.Platform;
+import Objetos.PlatformFactory;
 import Objetos.ProceduralBackground;
 import Objetos.Tree;
 import Objetos.TreeFactory;
@@ -36,8 +37,9 @@ public class GamePanel extends JPanel {
         String imagePath = "src/sprite/bg.jpg";
         backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
-        generateInitialPlatforms();
         generateInitialTrees();
+        generateInitialPlatforms();
+        
 
         Timer timer = new Timer(10, new ActionListener() {
             @Override
@@ -91,28 +93,33 @@ public class GamePanel extends JPanel {
         int bluePlatformHeight = 10;
         int bluePlatformSpacingX = 400;
         Random random = new Random();
-
+    
         for (int i = 0; i < 4; i++) {
             int bluePlatformX = playerX + i * bluePlatformSpacingX;
             int bluePlatformY = random.nextInt(51) + 500; // Ajusta según la altura deseada de las plataformas azules
-
-            platforms
-                    .add(new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight, Color.BLUE));
+    
+            platforms.add(new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight, Color.BLUE));
         }
-
+    
         int purplePlatformWidth = 250; // Ancho de las plataformas moradas
         int purplePlatformHeight = 20;
         int purplePlatformSpacingX = 600; // Ajusta el espaciado entre las plataformas moradas
-
+    
         for (int i = 0; i < 5; i++) {
             int purplePlatformX = playerX + i * purplePlatformSpacingX;
-            int purplePlatformY = random.nextInt(51) + 350; // Ajusta según la altura deseada de las plataformas moradas
-
-            platforms.add(new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth, purplePlatformHeight,
-                    Color.MAGENTA));
-
+            int purplePlatformY;
+    
+            // Ajusta según la altura deseada de las plataformas moradas y su posición en la ventana
+            if (i % 2 == 0) {
+                purplePlatformY = random.nextInt(51) + 350;
+            } else {
+                purplePlatformY = random.nextInt(51) + 150; // Coloca las plataformas moradas más arriba
+            }
+    
+            platforms.add(new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth, purplePlatformHeight, Color.MAGENTA));
         }
     }
+    
 
     private void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -183,18 +190,12 @@ public class GamePanel extends JPanel {
         // Actualizar la posición de las plataformas con el fondo
         for (Platform platform : platforms) {
             platform.setPlatformX(platform.getPlatformX() - playerSpeedX);
-
+    
             // Si una plataforma se sale completamente de la ventana, colócala en una nueva
             // posición aleatoria a la derecha de la ventana
             if (platform.getPlatformX() + platform.getPlatformWidth() < 0) {
                 platform.setPlatformX(getWidth() + new Random().nextInt(200));
-
-                // Ajustar la posición Y según el color de la plataforma
-                if (platform.getPlatformColor() == Color.BLUE) {
-                    platform.setPlatformY(random.nextInt(51) + 500);
-                } else if (platform.getPlatformColor() == Color.MAGENTA) {
-                    platform.setPlatformY(random.nextInt(151) + 250);
-                }
+                platform.setPlatformY(random.nextInt(51) + 500); // Ajusta según la altura deseada de las plataformas
             }
         }
 
