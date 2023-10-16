@@ -10,6 +10,8 @@ import Objetos.OakTree;
 import Objetos.Platform;
 import Objetos.PlatformFactory;
 import Objetos.ProceduralBackground;
+import Objetos.SpecialObject;
+import Objetos.SpecialObjectFactory;
 import Objetos.Tree;
 import Objetos.TreeFactory;
 
@@ -26,6 +28,8 @@ public class GamePanel extends JPanel {
     private int playerY = 300;
     private int playerSpeedX = 0;
     private int playerSpeedY = 0;
+    private Color playerColor = Color.RED; // o cualquier otro color predeterminado
+
     private int backgroundSpeed = 2;
     private Set<Integer> pressedKeys = new HashSet<>();
     private List<Tree> trees = new ArrayList<>();
@@ -39,6 +43,8 @@ public class GamePanel extends JPanel {
     private static final int TIME_TO_CHANGE_DIRECTION = 10;
     private ProceduralBackground proceduralBackground;
     private int backgroundOffsetX = 0;
+    private List<SpecialObject> specialObjects = new ArrayList<>();
+
 
     // Panel Inicial
     public GamePanel() {
@@ -46,6 +52,7 @@ public class GamePanel extends JPanel {
         String imagePath = "src/sprite/bg.jpg";
         backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
+        generateInitialSpecialObjects();
         generateInitialTrees();
         generateInitialPlatforms();
         generateInitialEnemies();
@@ -55,9 +62,18 @@ public class GamePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 update();
                 updateEnemies();
+               
                 repaint();
+
             }
         });
+        Timer specialObjectTimer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateSpecialObjectAbovePlayer();
+            }
+        });
+        specialObjectTimer.start();
         timer.start();
 
         setFocusable(true);
@@ -150,6 +166,23 @@ public class GamePanel extends JPanel {
                     0));
         }
     }
+
+    private void generateInitialSpecialObjects() {
+    int specialObjectWidth = 30;
+    int specialObjectHeight = 30;
+    int specialObjectSpacingX = 200;
+    Random random = new Random();
+
+    for (int i = 0; i < 2; i++) {
+        int specialObjectX = playerX + i * specialObjectSpacingX;
+        int specialObjectY = random.nextInt(51) + 200; // Ajusta según la altura deseada de los objetos especiales
+
+        specialObjects.add(SpecialObjectFactory.createSpecialObject(specialObjectX, specialObjectY,
+                specialObjectWidth, specialObjectHeight));
+    }
+}
+
+    
 
     // Update enemigos iniciales
     private void updateEnemies() {
@@ -287,6 +320,7 @@ public class GamePanel extends JPanel {
 
     // Update Principal
     private void update() {
+        updateSpecialObjects();
         Random random = new Random();
         playerSpeedY += 1;
         playerX += playerSpeedX;
@@ -373,7 +407,84 @@ public class GamePanel extends JPanel {
             }
         }
     }
+    private void generateSpecialObjectAbovePlayer() {
+        Random random = new Random();
+    
+        // Ajusta las dimensiones del objeto especial según tus necesidades
+        int specialObjectWidth = 30;
+        int specialObjectHeight = 30;
+    
+        // Ajusta la posición del objeto especial para que aparezca encima del jugador
+        int specialObjectX = playerX;
+        int specialObjectY = playerY - specialObjectHeight-200;
+    
+        // Crea un nuevo objeto especial y agrégalo a la lista
+        SpecialObject specialObject = SpecialObjectFactory.createSpecialObject(
+                specialObjectX, specialObjectY, specialObjectWidth, specialObjectHeight);
+        specialObjects.add(specialObject);
+    }
+    
+    private void updateSpecialObjects() {
+        int gravity = 1; // Ajusta según la fuerza de gravedad deseada
+        int speedX = 2;
+        for (SpecialObject specialObject : specialObjects) {
+             // Aplica la gravedad a la velocidad vertical
+        specialObject.setY(specialObject.getY() + gravity);
 
+        // Mueve los objetos especiales en una dirección constante
+        // Mueve los objetos especiales junto con el jugador solo si este se mueve hacia la derecha
+        if (playerSpeedX > 0) {
+            specialObject.setX(specialObject.getX() - playerSpeedX);
+        } 
+
+    
+            // Verifica colisiones con las plataformas
+            boolean onPlatform = false;
+            // Verifica si hay colisión con el jugador
+        if (playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
+            // Cambia el color del jugador al color del objeto especial
+            playerColor = specialObject.getColor();
+            System.out.println( specialObject.getColor());
+        }
+            for (Platform platform : platforms) {
+                if (specialObjectCollidesWithPlatform(specialObject, platform)) {
+                    // Ajusta la posición del objeto especial según la colisión con la plataforma
+                    adjustSpecialObjectPositionOnCollision(specialObject, platform);
+    
+                    // Indica que el objeto especial está en una plataforma
+                    onPlatform = true;
+                }
+            }
+    
+            // Si el objeto especial llegó al suelo y no está en una plataforma, detén su caída
+            if (specialObject.getY() > getHeight() - specialObject.getHeight() && !onPlatform) {
+                specialObject.setY(getHeight() - specialObject.getHeight());
+            }
+        }
+    }
+
+    private boolean playerCollidesWithSpecialObject(int playerX, int playerY, int playerWidth, int playerHeight, SpecialObject specialObject) {
+        return playerX < specialObject.getX() + specialObject.getWidth() &&
+                playerX + playerWidth > specialObject.getX() &&
+                playerY < specialObject.getY() + specialObject.getHeight() &&
+                playerY + playerHeight > specialObject.getY();
+    }
+    
+    // Método para verificar colisiones entre un objeto especial y una plataforma
+    private boolean specialObjectCollidesWithPlatform(SpecialObject specialObject, Platform platform) {
+        return specialObject.getX() < platform.getPlatformX() + platform.getPlatformWidth() &&
+                specialObject.getX() + specialObject.getWidth() > platform.getPlatformX() &&
+                specialObject.getY() < platform.getPlatformY() + platform.getPlatformHeight() &&
+                specialObject.getY() + specialObject.getHeight() > platform.getPlatformY();
+    }
+    
+    // Método para ajustar la posición de un objeto especial en caso de colisión con una plataforma
+    private void adjustSpecialObjectPositionOnCollision(SpecialObject specialObject, Platform platform) {
+        // Ajusta la posición del objeto especial para que esté justo encima de la plataforma
+        specialObject.setY(platform.getPlatformY() - specialObject.getHeight());
+    }
+    
+    
     // Collisiones player
     private boolean playerCollidesWithEnemy(int playerX, int playerY, int playerWidth, int playerHeight, Enemy enemy) {
         return playerX < enemy.getEnemyX() + enemy.getEnemyWidth() &&
@@ -429,9 +540,9 @@ public class GamePanel extends JPanel {
 
         // Dibujar el fondo procedimental
         drawProceduralBackground(g);
-
+        
         // Dibujar los elementos del juego
-        g.setColor(Color.RED);
+        g.setColor(playerColor);
         g.fillRect(playerX, playerY, 50, 50);
 
         // Dibujar las plataformas
@@ -448,6 +559,10 @@ public class GamePanel extends JPanel {
 
             g.setColor(Color.GREEN);
             g.fillRect(treeX, treeY, tree.getTreeWidth(), tree.getTreeHeight());
+        }
+
+        for (SpecialObject specialObject : specialObjects) {
+            specialObject.draw(g);
         }
 
         // Dibujar los enemigos
