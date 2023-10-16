@@ -9,6 +9,7 @@ import Objetos.Platform;
 import Objetos.ProceduralBackground;
 import Objetos.Tree;
 import Objetos.TreeFactory;
+import modelo.game;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,12 +20,14 @@ import java.util.Random;
 import java.util.Set;
 
 public class GamePanel extends JPanel {
+    private Set<Integer> pressedKeys = new HashSet<>();
+    private game game;
     private int playerX = 50;
     private int playerY = 300;
     private int playerSpeedX = 0;
     private int playerSpeedY = 0;
     private int backgroundSpeed = 2;
-    private Set<Integer> pressedKeys = new HashSet<>();
+
     private List<Tree> trees = new ArrayList<>();
     private Image backgroundImage;
     private List<Platform> platforms = new ArrayList<>();
@@ -32,7 +35,8 @@ public class GamePanel extends JPanel {
     private ProceduralBackground proceduralBackground;
     private int backgroundOffsetX = 0;
 
-    public GamePanel() {
+    public GamePanel(game game) {
+        this.game = game;
         String imagePath = "src/sprite/bg.jpg";
         backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
@@ -127,10 +131,21 @@ public class GamePanel extends JPanel {
         }
     }
 
+    /*
+     * private void handleKeyRelease(KeyEvent e) {
+     * int keyCode = e.getKeyCode();
+     * pressedKeys.remove(keyCode);
+     * updatePlayerSpeed();
+     * }
+     */
     private void handleKeyRelease(KeyEvent e) {
         int keyCode = e.getKeyCode();
         pressedKeys.remove(keyCode);
         updatePlayerSpeed();
+
+        if (keyCode == KeyEvent.VK_LEFT) {
+            playerSpeedX = 0; // Detener el movimiento hacia la izquierda cuando se suelta la tecla
+        }
     }
 
     private void updatePlayerSpeed() {
@@ -151,11 +166,13 @@ public class GamePanel extends JPanel {
     }
 
     private void update() {
+        playerX += playerSpeedX;
+        playerY += playerSpeedY;
         Random random = new Random();
         playerSpeedY += 1;
         playerX += playerSpeedX;
         playerY += playerSpeedY;
-        backgroundOffsetX += playerSpeedX;
+        backgroundOffsetX += backgroundSpeed;
 
         if (playerY > getHeight() - 50) {
             playerY = getHeight() - 50;
@@ -224,23 +241,23 @@ public class GamePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Dibujar el fondo procedimental
+        // Dibuja el fondo procedural
         drawProceduralBackground(g);
 
-        // Dibujar los elementos del juego
+        // Dibuja los elementos del juego
         g.setColor(Color.RED);
         g.fillRect(playerX, playerY, 50, 50);
 
-        // Dibujar las plataformas
+        // Dibuja las plataformas
         for (Platform platform : platforms) {
             g.setColor(platform.getPlatformColor());
             g.fillRect(platform.getPlatformX(), platform.getPlatformY(), platform.getPlatformWidth(),
                     platform.getPlatformHeight());
         }
 
-        // Dibujar los árboles
+        // Dibuja los árboles
         for (Tree tree : trees) {
-            int treeX = tree.getTreeX(); // Ajustar la posición de los árboles según la velocidad del jugador
+            int treeX = tree.getTreeX();
             int treeY = tree.getTreeY();
 
             g.setColor(Color.GREEN);

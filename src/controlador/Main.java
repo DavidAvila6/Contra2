@@ -25,6 +25,7 @@ public class Main {
 package controlador;
 
 import modelo.game;
+import controlador.GamePanel;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
@@ -33,7 +34,7 @@ import java.awt.event.KeyEvent;
 public class Main {
     public static void main(String[] args) {
         game game = new game();
-        GamePanel gamePanel = new GamePanel();
+        GamePanel gamePanel = new GamePanel(game);
         Controller controller = new Controller(game, gamePanel);
 
         // Asignar el controlador como escuchador de eventos

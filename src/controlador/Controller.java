@@ -19,11 +19,14 @@ public class Controller {
     public void startGame() {
         // Inicia el juego, configura el panel, etc.
         // Puedes poner aquí el código que tienes en el método main
+
+        
     }
 
     public void handleKeyPress(int keyCode) {
         // Lógica para manejar la tecla presionada
         // Actualiza el modelo y llama a gamePanel.actualizar
+        
     }
 
     // Otros métodos para manejar eventos
