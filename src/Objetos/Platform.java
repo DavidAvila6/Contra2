@@ -2,12 +2,12 @@ package Objetos;
 
 import java.awt.Color;
 
-public class Platform {
+public class Platform implements Cloneable {
     private int platformX;
     private int platformY;
     private int platformWidth;
     private int platformHeight;
-    private Color platformColor;  // Nuevo campo para almacenar el color
+    private Color platformColor;
 
     public Platform(int x, int y, int width, int height, Color color) {
         this.platformX = x;
@@ -57,5 +57,10 @@ public class Platform {
 
     public void setPlatformColor(Color platformColor) {
         this.platformColor = platformColor;
+    }
+
+    @Override
+    public Platform clone() throws CloneNotSupportedException {
+        return (Platform) super.clone();
     }
 }
