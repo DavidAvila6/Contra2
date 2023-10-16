@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import Objetos.OakTree;
+import Objetos.Platform;
 import Objetos.ProceduralBackground;
 import Objetos.Tree;
 import Objetos.TreeFactory;
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel {
     private Set<Integer> pressedKeys = new HashSet<>();
     private List<Tree> trees = new ArrayList<>();
     private Image backgroundImage;
+    private List<Platform> platforms = new ArrayList<>();
     
     private ProceduralBackground proceduralBackground;
     private int backgroundOffsetX = 0;
@@ -33,7 +35,10 @@ public class GamePanel extends JPanel {
     	String imagePath = "src/sprite/bg.jpg";
         backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
+        generateInitialPlatforms();
         generateInitialTrees();
+       
+        
         
         
         Timer timer = new Timer(10, new ActionListener() {
@@ -80,6 +85,20 @@ public class GamePanel extends JPanel {
             trees.add(new OakTree(treeX, treeY, treeWidth, treeHeight));
         }
     }
+    
+    private void generateInitialPlatforms() {
+        int platformWidth = 350;  // Ajusta el ancho de las plataformas
+        int platformHeight = 10;
+        int platformSpacingX = 400;
+        Random random = new Random();
+        for (int i = 0; i < 4; i++) {
+            int platformX = playerX + i * platformSpacingX;
+            int platformY = random.nextInt(51) + 600;  // Ajusta según la altura deseada de las plataformas
+
+            platforms.add(new Platform(platformX, platformY, platformWidth, platformHeight));
+        }
+    }
+
 
     private void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -137,8 +156,32 @@ public class GamePanel extends JPanel {
                 tree.setTreeY(450);
             }
         }
+        Random random = new Random();
+
+        for (Platform platform : platforms) {
+            platform.setPlatformX(platform.getPlatformX() - playerSpeedX);
+            System.out.println("Plataforma en X: " + platform.getPlatformX() + ", Y: " + platform.getPlatformY());
+           
+            if (platform.getPlatformX() + platform.getPlatformWidth() < 0) {
+                platform.setPlatformX(getWidth() + new Random().nextInt(200));
+                platform.setPlatformY(random.nextInt(51) + 550);
+            }
+        }
+        //Colisiones
+        for (Platform platform : platforms) {
+            if (playerX < platform.getPlatformX() + platform.getPlatformWidth() &&
+                playerX + 50 > platform.getPlatformX() &&
+                playerY < platform.getPlatformY() + platform.getPlatformHeight() &&
+                playerY + 50 > platform.getPlatformY()) {
+                // Hay una colisión con la plataforma, ajusta la posición del jugador
+                playerY = platform.getPlatformY() - 50;
+                playerSpeedY = 0;
+            }
+        }
+    
     }
 
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -150,15 +193,24 @@ public class GamePanel extends JPanel {
         g.setColor(Color.RED);
         g.fillRect(playerX, playerY, 50, 50);
 
+        // Dibujar las plataformas
+        g.setColor(Color.BLUE);
+        
+        for (Platform platform : platforms) {
+            g.setColor(Color.BLUE);
+            g.fillRect(platform.getPlatformX(), platform.getPlatformY(), platform.getPlatformWidth(), platform.getPlatformHeight());
+        }
+
         // Dibujar los árboles
         for (Tree tree : trees) {
-        	int treeX = tree.getTreeX();  // Ajustar la posición de los árboles según la velocidad del jugador
+            int treeX = tree.getTreeX();  // Ajustar la posición de los árboles según la velocidad del jugador
             int treeY = tree.getTreeY();
 
             g.setColor(Color.GREEN);
             g.fillRect(treeX, treeY, tree.getTreeWidth(), tree.getTreeHeight());
         }
     }
+
 
 
     private void draw(Graphics g) {
