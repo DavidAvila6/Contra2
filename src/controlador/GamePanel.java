@@ -104,6 +104,13 @@ public class GamePanel extends JPanel {
         int keyCode = e.getKeyCode();
         pressedKeys.add(keyCode);
         updatePlayerSpeed();
+
+        if (keyCode == KeyEvent.VK_UP) {
+            // Permitir saltar en cualquier momento
+            if (playerY == getHeight() - 50) {
+                playerSpeedY = -15;
+            }
+        }
     }
 
     private void handleKeyRelease(KeyEvent e) {
@@ -130,6 +137,7 @@ public class GamePanel extends JPanel {
     }
 
     private void update() {
+    	Random random = new Random();
         playerSpeedY += 1;
         playerX += playerSpeedX;
         playerY += playerSpeedY;
@@ -150,24 +158,27 @@ public class GamePanel extends JPanel {
         // Actualizar la posición de los árboles con el fondo
         for (Tree tree : trees) {
             tree.setTreeX(tree.getTreeX() - playerSpeedX);
-           
+
             if (tree.getTreeX() + tree.getTreeWidth() < 0) {
                 tree.setTreeX(getWidth() + new Random().nextInt(200));
                 tree.setTreeY(450);
             }
         }
-        Random random = new Random();
 
+        // Actualizar la posición de las plataformas con el fondo
         for (Platform platform : platforms) {
             platform.setPlatformX(platform.getPlatformX() - playerSpeedX);
-            
-           
+
+            // Si una plataforma se sale completamente de la ventana, colócala en una nueva posición aleatoria a la derecha de la ventana
             if (platform.getPlatformX() + platform.getPlatformWidth() < 0) {
                 platform.setPlatformX(getWidth() + new Random().nextInt(200));
                 platform.setPlatformY(random.nextInt(51) + 550);
             }
         }
-        //Colisiones
+
+        // Colisiones
+        boolean isOnPlatform = false;  // Variable para rastrear si el jugador está en una plataforma
+
         for (Platform platform : platforms) {
             if (playerX < platform.getPlatformX() + platform.getPlatformWidth() &&
                 playerX + 50 > platform.getPlatformX() &&
@@ -176,10 +187,22 @@ public class GamePanel extends JPanel {
                 // Hay una colisión con la plataforma, ajusta la posición del jugador
                 playerY = platform.getPlatformY() - 50;
                 playerSpeedY = 0;
+                isOnPlatform = true;  // El jugador está en una plataforma
             }
         }
-    
+
+        // Si el jugador está en una plataforma, permite saltar incluso si no está en el suelo
+        if (isOnPlatform && pressedKeys.contains(KeyEvent.VK_UP)) {
+            playerSpeedY = -15;
+        }
     }
+    
+
+
+
+
+
+
 
     
     @Override
