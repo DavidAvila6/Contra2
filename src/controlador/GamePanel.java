@@ -1,19 +1,38 @@
 package controlador;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
+import Objetos.ProceduralBackground;
+import Objetos.Tree;
+import Objetos.TreeFactory;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class GamePanel extends JPanel {
     private int playerX = 50;
     private int playerY = 300;
-    private int playerSpeedX = 0; // Velocidad horizontal del jugador
-    private int playerSpeedY = 0; // Velocidad vertical del jugador
+    private int playerSpeedX = 0;
+    private int playerSpeedY = 0;
+    private int backgroundSpeed = 2;
     private Set<Integer> pressedKeys = new HashSet<>();
+    private List<Tree> trees = new ArrayList<>();
+    private Image backgroundImage;
+    private ProceduralBackground proceduralBackground;
+    private int backgroundOffsetX = 0;
 
     public GamePanel() {
+    	String imagePath = "src/sprite/bg.jpg";
+        backgroundImage = new ImageIcon(imagePath).getImage();
+        proceduralBackground = new ProceduralBackground(800, 600);
+        
+        
         Timer timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,19 +54,23 @@ public class GamePanel extends JPanel {
                 handleKeyRelease(e);
             }
         });
+
+        TreeFactory.loadCache();
+        // Crea algunos árboles en posiciones aleatorias fuera de la ventana
+        for (int i = 0; i < 5; i++) {
+            trees.add(TreeFactory.getTree("oak"));
+        }
     }
 
     private void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
         pressedKeys.add(keyCode);
-
         updatePlayerSpeed();
     }
 
     private void handleKeyRelease(KeyEvent e) {
         int keyCode = e.getKeyCode();
         pressedKeys.remove(keyCode);
-
         updatePlayerSpeed();
     }
 
@@ -62,7 +85,6 @@ public class GamePanel extends JPanel {
             playerSpeedX += 5;
         }
         if (pressedKeys.contains(KeyEvent.VK_UP)) {
-            // Salto solo si el jugador está en el suelo
             if (playerY == getHeight() - 50) {
                 playerSpeedY = -15;
             }
@@ -70,36 +92,77 @@ public class GamePanel extends JPanel {
     }
 
     private void update() {
-        // Aplicar gravedad
         playerSpeedY += 1;
-
-        // Actualizar la posición del jugador
         playerX += playerSpeedX;
         playerY += playerSpeedY;
+        backgroundOffsetX += playerSpeedX;
 
-        // Detección de colisiones con la ventana
         if (playerY > getHeight() - 50) {
             playerY = getHeight() - 50;
             playerSpeedY = 0;
         }
 
-        // Detección de colisiones con los bordes de la ventana
+        // Ajusta la lógica para que el jugador pueda recorrer más allá de los límites originales
         if (playerX < 0) {
-            playerX = 0;
-        } else if (playerX > getWidth() - 50) {
             playerX = getWidth() - 50;
+        } else if (playerX > getWidth() - 50) {
+            playerX = 0;
+        }
+
+        // Actualizar la posición de los árboles con el fondo
+        for (Tree tree : trees) {
+            tree.setTreeX(tree.getTreeX() - backgroundSpeed);
+
+            // Si un árbol se sale completamente de la ventana, colócalo en una nueva posición aleatoria a la derecha de la ventana
+            if (tree.getTreeX() + tree.getTreeWidth() < 0) {
+                tree.setTreeX(getWidth() + new Random().nextInt(200));
+                tree.setTreeY(new Random().nextInt(getHeight() - tree.getTreeHeight()));
+            }
         }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        draw(g);
-    }
 
-    private void draw(Graphics g) {
-        // Dibujar los elementos del juego (jugador, enemigos, fondos, etc.)
+        // Dibujar el fondo procedimental
+        drawProceduralBackground(g);
+
+        // Dibujar los elementos del juego
         g.setColor(Color.RED);
         g.fillRect(playerX, playerY, 50, 50);
+
+        // Dibujar los árboles
+        for (Tree tree : trees) {
+            int treeX = tree.getTreeX() + playerSpeedX;  // Ajustar la posición de los árboles según la velocidad del jugador
+            int treeY = tree.getTreeY();
+
+            g.setColor(Color.GREEN);
+            g.fillRect(treeX, treeY, tree.getTreeWidth(), tree.getTreeHeight());
+        }
+    }
+
+
+    private void draw(Graphics g) {
+        
+        g.setColor(Color.RED);
+        g.fillRect(playerX, playerY, 50, 50);
+
+        
+        for (Tree tree : trees) {
+            int treeX = tree.getTreeX() + playerSpeedX;  
+            int treeY = tree.getTreeY();
+
+            g.setColor(Color.GREEN);
+            g.fillRect(treeX, treeY, tree.getTreeWidth(), tree.getTreeHeight());
+        }
+    }
+    private void drawProceduralBackground(Graphics g) {
+        // Dibujar partes del fondo en función de la posición del jugador
+        int drawX = -backgroundOffsetX % proceduralBackground.getBackgroundImage().getWidth(null);
+        while (drawX < getWidth()) {
+            g.drawImage(proceduralBackground.getBackgroundImage(), drawX, 0, null);
+            drawX += proceduralBackground.getBackgroundImage().getWidth(null);
+        }
     }
 }
