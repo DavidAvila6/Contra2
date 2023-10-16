@@ -87,15 +87,27 @@ public class GamePanel extends JPanel {
     }
     
     private void generateInitialPlatforms() {
-        int platformWidth = 350;  // Ajusta el ancho de las plataformas
-        int platformHeight = 10;
-        int platformSpacingX = 400;
+        int bluePlatformWidth = 350;  // Ancho de las plataformas azules
+        int bluePlatformHeight = 10;
+        int bluePlatformSpacingX = 400;
         Random random = new Random();
-        for (int i = 0; i < 4; i++) {
-            int platformX = playerX + i * platformSpacingX;
-            int platformY = random.nextInt(51) + 600;  // Ajusta según la altura deseada de las plataformas
 
-            platforms.add(new Platform(platformX, platformY, platformWidth, platformHeight));
+        for (int i = 0; i < 4; i++) {
+            int bluePlatformX = playerX + i * bluePlatformSpacingX;
+            int bluePlatformY = random.nextInt(51) + 600;  // Ajusta según la altura deseada de las plataformas azules
+
+            platforms.add(new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight, Color.BLUE));
+        }
+
+        int purplePlatformWidth = 350;  // Ancho de las plataformas moradas
+        int purplePlatformHeight = 10;
+        int purplePlatformSpacingX = 600;  // Ajusta el espaciado entre las plataformas moradas
+
+        for (int i = 0; i < 2; i++) {
+            int purplePlatformX = playerX + i * purplePlatformSpacingX;
+            int purplePlatformY = random.nextInt(51) + 350;  // Ajusta según la altura deseada de las plataformas moradas
+
+            platforms.add(new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth, purplePlatformHeight, Color.MAGENTA));
         }
     }
 

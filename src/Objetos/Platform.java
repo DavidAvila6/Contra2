@@ -1,16 +1,20 @@
 package Objetos;
 
+import java.awt.Color;
+
 public class Platform {
     private int platformX;
     private int platformY;
     private int platformWidth;
     private int platformHeight;
+    private Color platformColor;  // Nuevo campo para almacenar el color
 
-    public Platform(int x, int y, int width, int height) {
+    public Platform(int x, int y, int width, int height, Color color) {
         this.platformX = x;
         this.platformY = y;
         this.platformWidth = width;
         this.platformHeight = height;
+        this.platformColor = color;
     }
 
     // Getters
@@ -30,6 +34,10 @@ public class Platform {
         return platformHeight;
     }
 
+    public Color getPlatformColor() {
+        return platformColor;
+    }
+
     // Setters
     public void setPlatformX(int platformX) {
         this.platformX = platformX;
@@ -45,5 +53,9 @@ public class Platform {
 
     public void setPlatformHeight(int platformHeight) {
         this.platformHeight = platformHeight;
+    }
+
+    public void setPlatformColor(Color platformColor) {
+        this.platformColor = platformColor;
     }
 }
