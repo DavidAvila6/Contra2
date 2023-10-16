@@ -8,7 +8,7 @@ public class ProceduralBackground {
     private Image backgroundImage;
     private int backgroundWidth;
     private int backgroundHeight;
-    private int tileSize = 300;  // Ajusta el tamaño de cada "tile" del fondo
+    private int tileSize = 200;  // Ajusta el tamaño de cada "tile" del fondo
 
     public ProceduralBackground(int width, int height) {
         backgroundWidth = width;

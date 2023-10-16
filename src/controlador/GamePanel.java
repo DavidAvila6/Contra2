@@ -94,13 +94,13 @@ public class GamePanel extends JPanel {
 
         for (int i = 0; i < 4; i++) {
             int bluePlatformX = playerX + i * bluePlatformSpacingX;
-            int bluePlatformY = random.nextInt(51) + 600;  // Ajusta según la altura deseada de las plataformas azules
+            int bluePlatformY = random.nextInt(51) + 500;  // Ajusta según la altura deseada de las plataformas azules
 
             platforms.add(new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight, Color.BLUE));
         }
 
-        int purplePlatformWidth = 350;  // Ancho de las plataformas moradas
-        int purplePlatformHeight = 10;
+        int purplePlatformWidth = 250;  // Ancho de las plataformas moradas
+        int purplePlatformHeight = 20;
         int purplePlatformSpacingX = 600;  // Ajusta el espaciado entre las plataformas moradas
 
         for (int i = 0; i < 5; i++) {
@@ -188,9 +188,9 @@ public class GamePanel extends JPanel {
         
                 // Ajustar la posición Y según el color de la plataforma
                 if (platform.getPlatformColor() == Color.BLUE) {
-                    platform.setPlatformY(random.nextInt(51) + 550);
+                    platform.setPlatformY( random.nextInt(51) + 500);
                 } else if (platform.getPlatformColor() == Color.MAGENTA) {
-                    platform.setPlatformY(random.nextInt(151) + 350);
+                    platform.setPlatformY(random.nextInt(151) + 250);
                 }
             }
         }
