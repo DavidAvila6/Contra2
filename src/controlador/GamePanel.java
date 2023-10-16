@@ -160,7 +160,7 @@ public class GamePanel extends JPanel {
 
         for (Platform platform : platforms) {
             platform.setPlatformX(platform.getPlatformX() - playerSpeedX);
-            System.out.println("Plataforma en X: " + platform.getPlatformX() + ", Y: " + platform.getPlatformY());
+            
            
             if (platform.getPlatformX() + platform.getPlatformWidth() < 0) {
                 platform.setPlatformX(getWidth() + new Random().nextInt(200));
