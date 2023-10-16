@@ -103,11 +103,12 @@ public class GamePanel extends JPanel {
         int purplePlatformHeight = 10;
         int purplePlatformSpacingX = 600;  // Ajusta el espaciado entre las plataformas moradas
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 5; i++) {
             int purplePlatformX = playerX + i * purplePlatformSpacingX;
             int purplePlatformY = random.nextInt(51) + 350;  // Ajusta según la altura deseada de las plataformas moradas
 
             platforms.add(new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth, purplePlatformHeight, Color.MAGENTA));
+            
         }
     }
 
@@ -180,13 +181,20 @@ public class GamePanel extends JPanel {
         // Actualizar la posición de las plataformas con el fondo
         for (Platform platform : platforms) {
             platform.setPlatformX(platform.getPlatformX() - playerSpeedX);
-
+        
             // Si una plataforma se sale completamente de la ventana, colócala en una nueva posición aleatoria a la derecha de la ventana
             if (platform.getPlatformX() + platform.getPlatformWidth() < 0) {
                 platform.setPlatformX(getWidth() + new Random().nextInt(200));
-                platform.setPlatformY(random.nextInt(51) + 550);
+        
+                // Ajustar la posición Y según el color de la plataforma
+                if (platform.getPlatformColor() == Color.BLUE) {
+                    platform.setPlatformY(random.nextInt(51) + 550);
+                } else if (platform.getPlatformColor() == Color.MAGENTA) {
+                    platform.setPlatformY(random.nextInt(151) + 350);
+                }
             }
         }
+        
 
         // Colisiones
         boolean isOnPlatform = false;  // Variable para rastrear si el jugador está en una plataforma
@@ -220,31 +228,30 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+    
         // Dibujar el fondo procedimental
         drawProceduralBackground(g);
-
+    
         // Dibujar los elementos del juego
         g.setColor(Color.RED);
         g.fillRect(playerX, playerY, 50, 50);
-
+    
         // Dibujar las plataformas
-        g.setColor(Color.BLUE);
-        
         for (Platform platform : platforms) {
-            g.setColor(Color.BLUE);
+            g.setColor(platform.getPlatformColor());
             g.fillRect(platform.getPlatformX(), platform.getPlatformY(), platform.getPlatformWidth(), platform.getPlatformHeight());
         }
-
+    
         // Dibujar los árboles
         for (Tree tree : trees) {
             int treeX = tree.getTreeX();  // Ajustar la posición de los árboles según la velocidad del jugador
             int treeY = tree.getTreeY();
-
+    
             g.setColor(Color.GREEN);
             g.fillRect(treeX, treeY, tree.getTreeWidth(), tree.getTreeHeight());
         }
     }
+    
 
 
 
