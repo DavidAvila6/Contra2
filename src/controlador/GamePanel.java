@@ -28,11 +28,15 @@ import java.util.Set;
 public class GamePanel extends JPanel {
     private int playerX = 50;
     private int playerY = 300;
-    private int playerSpeedX = 0;
-    private int playerSpeedY = 0;
+    private int playerWith = 50;
+    private int playerHeigh = 50;
+    private int speedBoost = 0;
+    private int playerSpeedX = 0 + speedBoost;
+    private int jumpBoost = 0;
+    private int playerSpeedY = 0 - jumpBoost;
     private Color playerColor = Color.RED; // o cualquier otro color predeterminado
     private int playerLives = 3;
-
+    
     private int backgroundSpeed = 2;
     private Set<Integer> pressedKeys = new HashSet<>();
     private List<Tree> trees = new ArrayList<>();
@@ -198,7 +202,7 @@ public class GamePanel extends JPanel {
             gameObjects.add(newEnemy);
         }
     }
-
+    
     private void generateInitialSpecialObjects() {
         int specialObjectWidth = 30;
         int specialObjectHeight = 30;
@@ -320,7 +324,7 @@ public class GamePanel extends JPanel {
         if (keyCode == KeyEvent.VK_UP) {
             // Permitir saltar en cualquier momento
             if (playerY == getHeight() - 50) {
-                playerSpeedY = -15;
+                playerSpeedY = -15 - jumpBoost;
             }
         }
     }
@@ -338,14 +342,15 @@ public class GamePanel extends JPanel {
         playerSpeedY = 0;
 
         if (pressedKeys.contains(KeyEvent.VK_LEFT)) {
-            playerSpeedX -= 5;
+            playerSpeedX -= 5 +  speedBoost;
+            
         }
         if (pressedKeys.contains(KeyEvent.VK_RIGHT)) {
-            playerSpeedX += 5;
+            playerSpeedX += 5 + speedBoost;
         }
         if (pressedKeys.contains(KeyEvent.VK_UP)) {
             if (playerY == getHeight() - 50) {
-                playerSpeedY = -15;
+                playerSpeedY = -15 - jumpBoost;
             }
         }
     }
@@ -354,7 +359,7 @@ public class GamePanel extends JPanel {
     private void update() {
         updateSpecialObjects();
         Random random = new Random();
-        playerSpeedY += 1;
+        playerSpeedY += 1 ;
         playerX += playerSpeedX;
         playerY += playerSpeedY;
         if (playerSpeedX > 0) {
@@ -387,7 +392,7 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-
+        
         // Actualizar la posición de las plataformas con el fondo
         for (Platform platform : platforms) {
             if (playerSpeedX > 0) {
@@ -428,7 +433,7 @@ public class GamePanel extends JPanel {
         // Si el jugador está en una plataforma, permite saltar incluso si no está en el
         // suelo
         if (isOnPlatform && pressedKeys.contains(KeyEvent.VK_UP)) {
-            playerSpeedY = -15;
+            playerSpeedY = -15 - jumpBoost;
         }
 
         for (Enemy enemy : enemies) {
@@ -498,8 +503,36 @@ public class GamePanel extends JPanel {
             // Verifica si hay colisión con el jugador
             if (playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
                 // Cambia el color del jugador al color del objeto especial
+                if (specialObject.getColor().equals(Color.GREEN)) {
+                    playerHeigh=50;
+                    playerWith=50;
+                    speedBoost = 0;
+                    jumpBoost = 80; 
+                }
+                if (specialObject.getColor().equals(Color.CYAN)) {
+                    playerHeigh=50;
+                    playerWith=50;
+                    speedBoost = 20;
+                    jumpBoost = 0; 
+                }
+                if (specialObject.getColor().equals(Color.YELLOW)) {
+                    // Ajusta el tamaño del jugador
+                    playerHeigh-=40;
+                    playerWith-=40;
+                    speedBoost = 0;
+                    jumpBoost = 0;
+                     // Duplica la altura (ajusta según tus necesidades)
+                }
+                if (specialObject.getColor().equals(Color.RED)) {
+                    playerHeigh=50;
+                    playerWith=50;
+                    speedBoost = 0;
+                    jumpBoost = 0;
+                    playerLives += 1; 
+                }
                 playerColor = specialObject.getColor();
-
+                gameObjects.remove( specialObject);
+               specialObject.setX(-200);
             }
             for (Platform platform : platforms) {
                 if (specialObjectCollidesWithPlatform(specialObject, platform)) {
@@ -510,13 +543,15 @@ public class GamePanel extends JPanel {
                     onPlatform = true;
                 }
             }
-
+            
             // Si el objeto especial llegó al suelo y no está en una plataforma, detén su
             // caída
             if (specialObject.getY() > getHeight() - specialObject.getHeight() && !onPlatform) {
                 specialObject.setY(getHeight() - specialObject.getHeight());
             }
         }
+        // Aplica el impulso de salto al jugador
+        
     }
 
     private boolean playerCollidesWithSpecialObject(int playerX, int playerY, int playerWidth, int playerHeight,
@@ -601,7 +636,7 @@ public class GamePanel extends JPanel {
 
         // Dibujar los elementos del juego
         g.setColor(playerColor);
-        g.fillRect(playerX, playerY, 50, 50);
+        g.fillRect(playerX, playerY, playerWith, playerHeigh);
         g.setColor(Color.BLACK);
         g.drawString("Vidas: ", 10, 20);
 
