@@ -1,49 +1,59 @@
 package Objetos;
 
+import java.awt.Color;
+
 public abstract class Tree implements Cloneable {
-    private int treeHeight;
-    private int treeWidth;
-    private int treeX;
-    private int treeY;
-    
-    public Tree(int treeX, int treeY, int treeWidth, int treeHeight) {
-        this.treeX = treeX;
-        this.treeY = treeY;
-        this.treeWidth = treeWidth;
-        this.treeHeight = treeHeight;
+    private int height;
+    private int width;
+    private int x;
+    private int y;
+    private Color color;
+
+    public Tree(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
-    
-    public int getTreeHeight() {
-        return treeHeight;
+    public int getHeight() {
+        return height;
     }
 
-    public void setTreeHeight(int treeHeight) {
-        this.treeHeight = treeHeight;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
-    public int getTreeWidth() {
-        return treeWidth;
+    public int getWidth() {
+        return width;
     }
 
-    public void setTreeWidth(int treeWidth) {
-        this.treeWidth = treeWidth;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public int getTreeX() {
-        return treeX;
+    public int getX() {
+        return x;
     }
 
-    public void setTreeX(int treeX) {
-        this.treeX = treeX;
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public int getTreeY() {
-        return treeY;
+    public int getY() {
+        return y;
     }
 
-    public void setTreeY(int treeY) {
-        this.treeY = treeY;
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     @Override

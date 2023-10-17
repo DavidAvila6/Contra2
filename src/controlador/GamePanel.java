@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import Objetos.Cloud;
 import Objetos.Enemy;
 import Objetos.EnemyFactory;
 import Objetos.OakTree;
@@ -13,7 +14,7 @@ import Objetos.ProceduralBackground;
 import Objetos.SpecialObject;
 import Objetos.SpecialObjectFactory;
 import Objetos.Tree;
-import Objetos.TreeFactory;
+import Objetos.ObjectFactory;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -89,31 +90,54 @@ public class GamePanel extends JPanel {
             }
         });
 
-        TreeFactory.loadCache();
+        ObjectFactory.loadCache();
         // Crea algunos árboles en posiciones aleatorias fuera de la ventana
         for (int i = 0; i < 5; i++) {
-            trees.add(TreeFactory.getTree("oak"));
+            trees.add(ObjectFactory.getTree("oak"));
         }
     }
 
     // Inicializa Arboles
     private void generateInitialTrees() {
-        trees.clear(); // Limpiar árboles existentes
+    trees.clear(); // Limpiar árboles existentes
 
-        int treeHeight = 100; // Ajusta según el tamaño de tus árboles
-        int treeWidth = 50; // Ajusta según el tamaño de tus árboles
-        int treeSpacingX = 200; // Espaciado entre árboles (ajusta según tus necesidades)
+    int treeHeight = 100; // Ajusta según el tamaño de tus árboles
+    int treeWidth = 50; // Ajusta según el tamaño de tus árboles
+    int treeSpacingX = 200; // Espaciado entre árboles (ajusta según tus necesidades)
 
-        // Generar árboles en posiciones aleatorias cerca de la altura inicial del
-        // jugador
-        for (int i = 0; i < 5; i++) {
-            int treeX = i * treeSpacingX;
-            int treeY = getHeight() - treeHeight; // Ajustar la altura de los árboles según la posición vertical del
-                                                  // jugador
+    // Generar árboles o nubes en posiciones aleatorias cerca de la altura inicial del jugador
+    for (int i = 0; i < 5; i++) {
+        int treeX = i * treeSpacingX;
+        int treeY = getHeight() - treeHeight; // Ajustar la altura de los árboles según la posición vertical del jugador
 
-            trees.add(new OakTree(treeX, treeY, treeWidth, treeHeight));
-        }
+        // Agrega árboles o nubes aleatoriamente
+        Tree newTree = getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
+        
+        trees.add(newTree);
     }
+}
+
+// Método para obtener un árbol o una nube de manera aleatoria
+private Tree getRandomTreeOrCloud(int x, int y, int width, int height) {
+    Random random = new Random();
+    int objectType = random.nextInt(2); // Cambia el número según la cantidad de tipos (árboles y nubes)
+
+    switch (objectType) {
+        case 0:
+            // Devuelve un árbol con dimensiones específicas
+            return new OakTree(x, y, 50, 100); // Ajusta las dimensiones según tus necesidades
+        case 1:
+            // Devuelve una nube con dimensiones específicas
+            Cloud cloud = new Cloud(x, y, 100, 70); // Ajusta las dimensiones según tus necesidades
+            cloud.setColor(Color.WHITE); // Establece el color de la nube
+            return cloud;
+        // Puedes agregar más casos para otros tipos si es necesario
+        default:
+            return null;
+    }
+}
+
+
 
     // Inicializa Plataformas
     private void generateInitialPlatforms() {
@@ -345,12 +369,14 @@ public class GamePanel extends JPanel {
         // Actualizar la posición de los árboles con el fondo
         for (Tree tree : trees) {
             if (playerSpeedX > 0) {
-                tree.setTreeX(tree.getTreeX() - playerSpeedX);
+                tree.setX(tree.getX() - playerSpeedX);
             }
-
-            if (tree.getTreeX() + tree.getTreeWidth() < 0) {
-                tree.setTreeX(getWidth() + new Random().nextInt(200));
-                tree.setTreeY(450);
+            if (tree.getX() + tree.getWidth() < 0) {
+                tree.setX(getWidth() + new Random().nextInt(200));
+                tree.setY(450);
+                if (tree instanceof Cloud) {
+                    tree.setY(150);
+                }
             }
         }
 
@@ -444,7 +470,7 @@ public class GamePanel extends JPanel {
         if (playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
             // Cambia el color del jugador al color del objeto especial
             playerColor = specialObject.getColor();
-            System.out.println( specialObject.getColor());
+            
         }
             for (Platform platform : platforms) {
                 if (specialObjectCollidesWithPlatform(specialObject, platform)) {
@@ -554,12 +580,14 @@ public class GamePanel extends JPanel {
 
         // Dibujar los árboles
         for (Tree tree : trees) {
-            int treeX = tree.getTreeX(); // Ajustar la posición de los árboles según la velocidad del jugador
-            int treeY = tree.getTreeY();
-
-            g.setColor(Color.GREEN);
-            g.fillRect(treeX, treeY, tree.getTreeWidth(), tree.getTreeHeight());
+            int treeX = tree.getX();
+            int treeY = tree.getY();
+        
+            Color treeColor = tree.getColor();
+            g.setColor(treeColor);
+            g.fillRect(treeX, treeY, tree.getWidth(), tree.getHeight());
         }
+        
 
         for (SpecialObject specialObject : specialObjects) {
             specialObject.draw(g);
@@ -578,19 +606,7 @@ public class GamePanel extends JPanel {
     }
 
     // Draw
-    private void draw(Graphics g) {
-
-        g.setColor(Color.RED);
-        g.fillRect(playerX, playerY, 50, 50);
-
-        for (Tree tree : trees) {
-            int treeX = tree.getTreeX();
-            int treeY = tree.getTreeY();
-
-            g.setColor(Color.GREEN);
-            g.fillRect(treeX, treeY, tree.getTreeWidth(), tree.getTreeHeight());
-        }
-    }
+    
 
     // Dibuja Fondo Procedural
     private void drawProceduralBackground(Graphics g) {
