@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ObjectFactory {
-    private static Map<String, Object> treeCache = new HashMap<>();
+    private static Map<String, Object> ObjectCache = new HashMap<>();
 
-    public static Object getTree(String type) {
-        Object cachedTree = treeCache.get(type);
-        if (cachedTree != null) {
+    public static Object getObject(String type) {
+        Object cachedObject = ObjectCache.get(type);
+        if (cachedObject != null) {
             try {
-                return cachedTree.clone();
+                return cachedObject.clone();
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
@@ -21,8 +21,8 @@ public class ObjectFactory {
 
     public static void loadCache() {
         // Carga inicial de diferentes tipos de árboles en el cache
-        OakTree oakTree = new OakTree(0, 0, 0, 0);
-        treeCache.put("oak", oakTree);
+        OakTree oakObject = new OakTree(0, 0, 0, 0);
+        ObjectCache.put("oak", oakObject);
 
         // Agrega más tipos de árboles según sea necesario
     }

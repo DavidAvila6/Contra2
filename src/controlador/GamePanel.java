@@ -100,7 +100,7 @@ public class GamePanel extends JPanel {
         ObjectFactory.loadCache();
         // Crea algunos árboles en posiciones aleatorias fuera de la ventana
         for (int i = 0; i < 5; i++) {
-            trees.add(ObjectFactory.getTree("oak"));
+            trees.add(ObjectFactory.getObject("oak"));
         }
     }
 
@@ -654,6 +654,16 @@ public class GamePanel extends JPanel {
 
         for (GameObject gameObject : gameObjects) {
             gameObject.draw(g);
+        }
+        // Dibujar los árboles
+        for (Object tree : trees) {
+            int x = tree.getX(); // Ajustar la posición de los árboles según la velocidad del jugador
+            int y = tree.getY();
+
+
+            Color treeColor = tree.getColor();
+            g.setColor(treeColor);
+            g.fillRect(x, y, tree.getWidth(), tree.getHeight());
         }
 
     }

@@ -1,5 +1,6 @@
 package Objetos;
 
+import java.awt.Color;
 import java.util.Random;
 
 public class OakTree extends Object {
@@ -11,6 +12,7 @@ public class OakTree extends Object {
     public OakTree(int treeX, int treeY, int treeWidth, int treeHeight) {
         // Constructor con parámetros
         super(treeX, treeY, treeWidth, treeHeight);
+        setColor(Color.GREEN);
         this.treeHeight = 100;
         this.treeWidth = 50;
         this.treeX = 200;
