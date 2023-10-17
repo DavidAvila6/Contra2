@@ -9,9 +9,8 @@ import java.awt.event.KeyEvent;
 
 public class Main {
     public static void main(String[] args) {
-        game game = new game();
-        GamePanel gamePanel = new GamePanel();
-        Controller controller = new Controller(game, gamePanel);
+    GamePanel gamePanel = new GamePanel();
+    Controller controller = new Controller(gamePanel);
 
         // Asignar el controlador como escuchador de eventos
         gamePanel.addKeyListener(new KeyAdapter() {
