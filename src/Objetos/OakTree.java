@@ -2,7 +2,7 @@ package Objetos;
 
 import java.util.Random;
 
-public class OakTree extends Tree {
+public class OakTree extends Object {
     private int treeHeight;
     private int treeWidth;
     private int treeX;

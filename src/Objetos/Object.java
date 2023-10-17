@@ -2,14 +2,14 @@ package Objetos;
 
 import java.awt.Color;
 
-public abstract class Tree implements Cloneable {
+public abstract class Object implements Cloneable {
     private int height;
     private int width;
     private int x;
     private int y;
     private Color color;
 
-    public Tree(int x, int y, int width, int height) {
+    public Object(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -57,7 +57,7 @@ public abstract class Tree implements Cloneable {
     }
 
     @Override
-    public Tree clone() throws CloneNotSupportedException {
-        return (Tree) super.clone();
+    public Object clone() throws CloneNotSupportedException {
+        return (Object) super.clone();
     }
 }

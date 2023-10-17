@@ -3,7 +3,7 @@ package Objetos;
 import java.awt.Color;
 import java.util.Random;
 
-public class Cloud extends Tree {
+public class Cloud extends Object {
     private int height;
     private int width;
     private int x;

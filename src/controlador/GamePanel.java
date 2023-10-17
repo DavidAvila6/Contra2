@@ -13,7 +13,7 @@ import Objetos.PlatformFactory;
 import Objetos.ProceduralBackground;
 import Objetos.SpecialObject;
 import Objetos.SpecialObjectFactory;
-import Objetos.Tree;
+import Objetos.Object;
 import modelo.GameObject;
 import Objetos.ObjectFactory;
 
@@ -39,7 +39,7 @@ public class GamePanel extends JPanel {
     
     private int backgroundSpeed = 2;
     private Set<Integer> pressedKeys = new HashSet<>();
-    private List<Tree> trees = new ArrayList<>();
+    private List<Object> trees = new ArrayList<>();
     private Image backgroundImage;
     private List<Platform> platforms = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
@@ -120,7 +120,7 @@ public class GamePanel extends JPanel {
                                                   // jugador
 
             // Agrega árboles o nubes aleatoriamente
-            Tree newTree = getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
+            Object newTree = getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
 
             trees.add(newTree);
 
@@ -128,7 +128,7 @@ public class GamePanel extends JPanel {
     }
 
     // Método para obtener un árbol o una nube de manera aleatoria
-    private Tree getRandomTreeOrCloud(int x, int y, int width, int height) {
+    private Object getRandomTreeOrCloud(int x, int y, int width, int height) {
         Random random = new Random();
         int objectType = random.nextInt(2); // Cambia el número según la cantidad de tipos (árboles y nubes)
 
@@ -380,7 +380,7 @@ public class GamePanel extends JPanel {
         }
 
         // Actualizar la posición de los árboles con el fondo
-        for (Tree tree : trees) {
+        for (Object tree : trees) {
             if (playerSpeedX > 0) {
                 tree.setX(tree.getX() - playerSpeedX);
             }

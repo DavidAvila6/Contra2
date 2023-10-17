@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ObjectFactory {
-    private static Map<String, Tree> treeCache = new HashMap<>();
+    private static Map<String, Object> treeCache = new HashMap<>();
 
-    public static Tree getTree(String type) {
-        Tree cachedTree = treeCache.get(type);
+    public static Object getTree(String type) {
+        Object cachedTree = treeCache.get(type);
         if (cachedTree != null) {
             try {
                 return cachedTree.clone();
