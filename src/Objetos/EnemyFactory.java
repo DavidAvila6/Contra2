@@ -13,8 +13,8 @@ public class EnemyFactory {
             try {
                 // Si existe en el caché, clonar y ajustar la posición y velocidad
                 Enemy newEnemy = cachedEnemy.clone();
-                newEnemy.setEnemyX(x);
-                newEnemy.setEnemyY(y);
+                newEnemy.setX(x);
+                newEnemy.setY(y);
                 newEnemy.setEnemySpeedX(speedX);
                 newEnemy.setEnemySpeedY(speedY);
                 return newEnemy;
