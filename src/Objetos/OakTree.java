@@ -1,6 +1,5 @@
 package Objetos;
 
-import java.awt.Color;
 import java.util.Random;
 
 public class OakTree extends Tree {
@@ -16,7 +15,7 @@ public class OakTree extends Tree {
         this.treeWidth = 50;
         this.treeX = 200;
         this.treeY = 400;
-        setColor(Color.GREEN); 
+
         Random random = new Random();
         this.treeX = random.nextInt(800) + 800; // Ajusta según el tamaño de tu ventana
         this.treeY = 450;

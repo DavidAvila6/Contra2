@@ -1,19 +1,17 @@
-package Objetos;
+package modelo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
-import modelo.GameObject;
-
-public class SpecialObject extends GameObject {
+public class GameObject {
     private int x;
     private int y;
     private int width;
     private int height;
     private Color color;
 
-    public SpecialObject(int x, int y, int width, int height, Color color) {
-        super(x, y, width, height, color);
+    public GameObject(int x, int y, int width, int height, Color color) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -21,12 +19,14 @@ public class SpecialObject extends GameObject {
         this.color = color;
     }
 
-    public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillRect(x, y, width, height);
-    }
+    // Métodos getters y setters para las propiedades
 
-    // Métodos Getters y Setters
+    public GameObject(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
 
     public int getX() {
         return x;
@@ -66,5 +66,16 @@ public class SpecialObject extends GameObject {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    // Método para obtener el área de colisión del objeto
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
+    }
+
+    // Método para dibujar el objeto en el lienzo
+    public void draw(Graphics g) {
+        g.setColor(color);
+        g.fillRect(x, y, width, height);
     }
 }
