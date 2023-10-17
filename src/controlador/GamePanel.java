@@ -507,20 +507,20 @@ public class GamePanel extends JPanel {
                     playerHeigh=50;
                     playerWith=50;
                     speedBoost = 0;
-                    jumpBoost = 80; 
+                    jumpBoost = 20; 
                 }
                 if (specialObject.getColor().equals(Color.CYAN)) {
                     playerHeigh=50;
                     playerWith=50;
-                    speedBoost = 20;
+                    speedBoost = 30;
                     jumpBoost = 0; 
                 }
                 if (specialObject.getColor().equals(Color.YELLOW)) {
                     // Ajusta el tamaño del jugador
-                    playerHeigh-=40;
-                    playerWith-=40;
-                    speedBoost = 0;
-                    jumpBoost = 0;
+                    playerHeigh=5;
+                    playerWith=5;
+                    speedBoost = 5;
+                    jumpBoost = 5;
                      // Duplica la altura (ajusta según tus necesidades)
                 }
                 if (specialObject.getColor().equals(Color.RED)) {
