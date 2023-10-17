@@ -31,6 +31,7 @@ public class GamePanel extends JPanel {
     private int playerSpeedX = 0;
     private int playerSpeedY = 0;
     private Color playerColor = Color.RED; // o cualquier otro color predeterminado
+    private int playerLives = 3;
 
     private int backgroundSpeed = 2;
     private Set<Integer> pressedKeys = new HashSet<>();
@@ -73,6 +74,7 @@ public class GamePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 generateSpecialObjectAbovePlayer();
+                
             }
         });
         specialObjectTimer.start();
@@ -117,7 +119,7 @@ public class GamePanel extends JPanel {
             Tree newTree = getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
 
             trees.add(newTree);
-            
+
         }
     }
 
@@ -151,7 +153,8 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 4; i++) {
             int bluePlatformX = playerX + i * bluePlatformSpacingX;
             int bluePlatformY = random.nextInt(51) + 500; // Ajusta según la altura deseada de las plataformas azules
-            Platform newPlatform = new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight, Color.BLUE);
+            Platform newPlatform = new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight,
+                    Color.BLUE);
             platforms.add(newPlatform);
             gameObjects.add(newPlatform);
         }
@@ -171,7 +174,8 @@ public class GamePanel extends JPanel {
             } else {
                 purplePlatformY = random.nextInt(51) + 150; // Coloca las plataformas moradas más arriba
             }
-            Platform newPlatform = new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth, purplePlatformHeight,
+            Platform newPlatform = new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth,
+                    purplePlatformHeight,
                     Color.MAGENTA);
             platforms.add(newPlatform);
             gameObjects.add(newPlatform);
@@ -189,7 +193,7 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 5; i++) {
             int enemyX = random.nextInt(200) + i * enemySpacingX; // Ajusta según el rango deseado
             int enemyY = random.nextInt(51) + 475; // Ajusta según la altura deseada de los enemigos
-            Enemy newEnemy=new Enemy(enemyX, enemyY, enemyWidth, enemyHeight, Color.BLACK, enemySpeed, 0);
+            Enemy newEnemy = new Enemy(enemyX, enemyY, enemyWidth, enemyHeight, Color.BLACK, enemySpeed, 0);
             enemies.add(newEnemy);
             gameObjects.add(newEnemy);
         }
@@ -429,18 +433,35 @@ public class GamePanel extends JPanel {
 
         for (Enemy enemy : enemies) {
             if (playerCollidesWithEnemy(playerX, playerY, 50, 50, enemy)) {
-                // Colisión con un enemigo, muestra "Game Over"
-                JOptionPane.showMessageDialog(this, "Game Over");
-    
-                // Reinicia el juego
-                resetGame();
-                return; // Sale del método, ya que el juego se reinició
+                // Colisión con un enemigo, reduce una vida
+                playerLives--;
+
+                // Verifica si quedan vidas
+                if (playerLives <= 0) {
+                    // Si no quedan vidas, muestra "Game Over"
+                    JOptionPane.showMessageDialog(this, "Game Over");
+
+                    // Reinicia el juego
+                    resetGame();
+                    return; // Sale del método, ya que el juego se reinició
+                }
+
+                // Restablece la posición del jugador o realiza otras acciones según sea
+                // necesario
+                resetPlayerPosition();
             }
         }
     }
 
+    private void resetPlayerPosition() {
+        // Restablece la posición del jugador según tus necesidades
+        playerX = 50;
+        playerY = 300;
+        playerSpeedX = 0;
+        playerSpeedY = 0;
+    }
+
     private void generateSpecialObjectAbovePlayer() {
-        
 
         // Ajusta las dimensiones del objeto especial según tus necesidades
         int specialObjectWidth = 30;
@@ -454,6 +475,8 @@ public class GamePanel extends JPanel {
         SpecialObject specialObject = SpecialObjectFactory.createSpecialObject(
                 specialObjectX, specialObjectY, specialObjectWidth, specialObjectHeight);
         specialObjects.add(specialObject);
+        gameObjects.add(specialObject);
+
     }
 
     private void updateSpecialObjects() {
@@ -579,15 +602,26 @@ public class GamePanel extends JPanel {
         // Dibujar los elementos del juego
         g.setColor(playerColor);
         g.fillRect(playerX, playerY, 50, 50);
+        g.setColor(Color.BLACK);
+        g.drawString("Vidas: ", 10, 20);
 
-        
+        int circleRadius = 15; // Ajusta el radio del círculo según tus preferencias
+        int circleSpacing = 5; // Ajusta el espacio entre círculos según tus preferencias
+
+        // Dibujar círculos representando las vidas restantes
+        for (int i = 0; i < playerLives; i++) {
+            int circleX = 60 + (circleRadius * 2 + circleSpacing) * i;
+            int circleY = 10;
+
+            g.setColor(Color.RED); // Puedes ajustar el color del círculo según tus preferencias
+            g.fillOval(circleX, circleY, circleRadius * 2, circleRadius * 2);
+        }
+
         for (GameObject gameObject : gameObjects) {
-        gameObject.draw(g);
-    }
+            gameObject.draw(g);
+        }
 
-       
     }
-
 
     // Draw
 
