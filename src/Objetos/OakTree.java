@@ -1,9 +1,12 @@
 package Objetos;
 
-import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import java.util.Random;
 
 public class OakTree extends Object {
+    private Image treeImage;
     private int treeHeight;
     private int treeWidth;
     private int treeX;
@@ -12,7 +15,7 @@ public class OakTree extends Object {
     public OakTree(int treeX, int treeY, int treeWidth, int treeHeight) {
         // Constructor con parámetros
         super(treeX, treeY, treeWidth, treeHeight);
-        setColor(Color.GREEN);
+       
         this.treeHeight = 100;
         this.treeWidth = 50;
         this.treeX = 200;
@@ -21,6 +24,7 @@ public class OakTree extends Object {
         Random random = new Random();
         this.treeX = random.nextInt(800) + 800; // Ajusta según el tamaño de tu ventana
         this.treeY = 450;
+        treeImage = new ImageIcon("sprite\\pngwing.com.png").getImage();
     }
 
     public int getTreeHeight() {
@@ -53,6 +57,10 @@ public class OakTree extends Object {
 
     public void setTreeY(int treeY) {
         this.treeY = treeY;
+    }
+    public void draw(Graphics g) {
+        // Dibuja la imagen del árbol en lugar de un rectángulo
+        g.drawImage(treeImage, getX(), getY(), getWidth(), getHeight(), null);
     }
 
 }
