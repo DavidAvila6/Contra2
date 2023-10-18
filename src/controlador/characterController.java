@@ -4,21 +4,33 @@ import java.awt.event.KeyEvent;
 
 import Objetos.Enemy;
 import Objetos.SpecialObject;
+import Objetos.Character.Character1Factory;
+import Objetos.Character.Character2Factory;
+import Objetos.Character.CharacterFactory;
+import Objetos.Character.Character;
 
-public class characterController {
+public class CharacterController {
     private GamePanel gamePanel;
+    private Character c;
+    
 
-    public characterController(GamePanel gamePanel) {
+    public CharacterController(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+        c= gamePanel.initializeCharacter(2); 
 
     }
 
+    
+
+  
+
+
+
     public void resetPlayerPosition() {
-        // Restablece la posición del jugador según tus necesidades
-        gamePanel.playerX = 50;
-        gamePanel.playerY = 300;
-        gamePanel.playerSpeedX = 0;
-        gamePanel.playerSpeedY = 0;
+        c.setPlayerX(50);
+        c.setPlayerY(300);
+        c.setPlayerSpeedX(0);
+        c.setPlayerSpeedY(0);
     }
 
     public boolean playerCollidesWithSpecialObject(int playerX, int playerY, int playerWidth, int playerHeight,
@@ -37,19 +49,19 @@ public class characterController {
     }
 
     public void updatePlayerSpeed() {
-        gamePanel.playerSpeedX = 0;
-        gamePanel.playerSpeedY = 0;
+        c.setPlayerSpeedX(0);
+        c.setPlayerSpeedY(0);
 
         if (gamePanel.pressedKeys.contains(KeyEvent.VK_LEFT)) {
-            gamePanel.playerSpeedX -= 5 + gamePanel.speedBoost;
+            c.setPlayerSpeedX(c.getPlayerSpeedX()-5+c.getSpeedBoost()); 
 
         }
         if (gamePanel.pressedKeys.contains(KeyEvent.VK_RIGHT)) {
-            gamePanel.playerSpeedX += 5 + gamePanel.speedBoost;
+            c.setPlayerSpeedX(c.getPlayerSpeedX()+5+c.getSpeedBoost()); 
         }
         if (gamePanel.pressedKeys.contains(KeyEvent.VK_UP)) {
-            if (gamePanel.playerY == gamePanel.getHeight() - 50) {
-                gamePanel.playerSpeedY = -15 - gamePanel.jumpBoost;
+            if (c.getPlayerY()== gamePanel.getHeight() - 50) {
+               c.setPlayerSpeedY(c.getPlayerSpeedY()-15-c.getJumpBoost()); 
             }
         }
     }

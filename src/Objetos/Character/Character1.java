@@ -1,4 +1,5 @@
 package Objetos.Character;
+import java.awt.Color;
 
 public class Character1 extends Character {
     private int SpeedBoost = 5;
@@ -7,20 +8,10 @@ public class Character1 extends Character {
 
         super();
         setSpeedBoost(SpeedBoost);
+        setPlayerColor(Color.blue);
     }
     
-    @Override
-    public void jump() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'jump'");
-    }
-
-    @Override
-    public void attack() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attack'");
-    }
-
+   
 
 
     

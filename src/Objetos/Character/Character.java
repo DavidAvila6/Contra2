@@ -100,7 +100,5 @@ public abstract class  Character {
         playerY += deltaY;
     }
 
-    public abstract void jump();
-
-    public abstract void attack();
+    
 }

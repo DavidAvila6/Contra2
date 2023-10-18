@@ -12,14 +12,17 @@ import Objetos.OakTree;
 import Objetos.Platform;
 import Objetos.SpecialObject;
 import Objetos.SpecialObjectFactory;
+import Objetos.Character.Character;
 
 public class objetoController {
     private GamePanel gamePanel;
     public List<Object> trees = new ArrayList<>();
     public List<Platform> platforms = new ArrayList<>();
+    private Character c;
 
     public objetoController(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+       c= gamePanel.initializeCharacter(2);
 
     }
 
@@ -53,7 +56,7 @@ public class objetoController {
         Random random = new Random();
 
         for (int i = 0; i < 4; i++) {
-            int bluePlatformX = gamePanel.playerX + i * bluePlatformSpacingX;
+            int bluePlatformX = c.getPlayerX() + i * bluePlatformSpacingX;
             int bluePlatformY = random.nextInt(51) + 500; // Ajusta según la altura deseada de las plataformas azules
             Platform newPlatform = new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight,
                     Color.BLUE);
@@ -66,7 +69,7 @@ public class objetoController {
         int purplePlatformSpacingX = 600; // Ajusta el espaciado entre las plataformas moradas
 
         for (int i = 0; i < 5; i++) {
-            int purplePlatformX = gamePanel.playerX + i * purplePlatformSpacingX;
+            int purplePlatformX = c.getPlayerX() + i * purplePlatformSpacingX;
             int purplePlatformY;
 
             // Ajusta según la altura deseada de las plataformas moradas y su posición en la
@@ -110,8 +113,8 @@ public class objetoController {
         int specialObjectHeight = 30;
 
         // Ajusta la posición del objeto especial para que aparezca encima del jugador
-        int specialObjectX = gamePanel.playerX;
-        int specialObjectY = gamePanel.playerY - specialObjectHeight - 200;
+        int specialObjectX = c.getPlayerX();
+        int specialObjectY = c.getPlayerY() - specialObjectHeight - 200;
 
         // Crea un nuevo objeto especial y agrégalo a la lista
         SpecialObject specialObject = SpecialObjectFactory.createSpecialObject(
@@ -128,7 +131,7 @@ public class objetoController {
         Random random = new Random();
 
         for (int i = 0; i < 2; i++) {
-            int specialObjectX = gamePanel.playerX + i * specialObjectSpacingX;
+            int specialObjectX = c.getPlayerX() + i * specialObjectSpacingX;
             int specialObjectY = random.nextInt(51) + 200; // Ajusta según la altura deseada de los objetos especiales
 
             SpecialObject newSpecial = SpecialObjectFactory.createSpecialObject(specialObjectX, specialObjectY,

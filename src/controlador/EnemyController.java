@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import modelo.game;
+import Objetos.Character.Character;
 
 public class EnemyController {
     private game game;
@@ -28,10 +29,13 @@ public class EnemyController {
     public List<Enemy> enemies = new ArrayList<>();
     public int enemySpeed = 3;
     public int enemyGravity = 1;
+    private Character c;
+
 
     // Constructor que acepta un GamePanel
     public EnemyController(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+        c=gamePanel.initializeCharacter(2);
 
     }
 
@@ -127,8 +131,8 @@ public class EnemyController {
                 enemy.setEnemySpeedY(0); // Detiene la caída
             }
             // Mueve los enemigos con el fondo
-            if (gamePanel.playerSpeedX > 0) {
-                enemy.setX(enemy.getX() - gamePanel.playerSpeedX);
+            if (c.getPlayerSpeedX()> 0) {
+                enemy.setX(enemy.getX() - c.getPlayerSpeedX());
             }
 
             // Verifica si el enemigo está fuera de la pantalla y reposiciónalo

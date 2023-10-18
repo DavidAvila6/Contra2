@@ -14,6 +14,10 @@ import Objetos.PlatformFactory;
 import Objetos.ProceduralBackground;
 import Objetos.SpecialObject;
 import Objetos.SpecialObjectFactory;
+import Objetos.Character.Character1Factory;
+import Objetos.Character.Character2Factory;
+import Objetos.Character.CharacterFactory;
+import Objetos.Character.Character;
 import Objetos.Object;
 import modelo.GameObject;
 import modelo.game;
@@ -29,16 +33,8 @@ import java.util.Random;
 import java.util.Set;
 
 public class GamePanel extends JPanel {
-    public int playerX = 50;
-    public int playerY = 300;
-    public int playerWith = 50;
-    public int playerHeigh = 50;
-    public int speedBoost = 0;
-    public int playerSpeedX = 0 + speedBoost;
-    public int jumpBoost = 0;
-    public int playerSpeedY = 0 - jumpBoost;
-    public Color playerColor = Color.RED; // o cualquier otro color predeterminado
-    public int playerLives = 3;
+    
+    
 
     public int backgroundSpeed = 2;
     public Set<Integer> pressedKeys = new HashSet<>();
@@ -59,10 +55,11 @@ public class GamePanel extends JPanel {
     public Controller controller = new Controller(this);
     public objetoController objcontroller = new objetoController(this);
     public EnemyController EnemyController = new EnemyController(this);
-    public characterController charcontroller = new characterController(this);
+    public CharacterController charcontroller = new CharacterController(this);
     private List<Bala> balas = new ArrayList<>();
     List<Bala> balasParaEliminar = new ArrayList<>();
     List<Enemy> enemigosParaEliminar = new ArrayList<>();
+    private Character c;
 
     // Panel Inicial
     public GamePanel() {
@@ -74,6 +71,10 @@ public class GamePanel extends JPanel {
         objcontroller.generateInitialTrees();
         objcontroller.generateInitialPlatforms();
         EnemyController.generateInitialEnemies();
+
+        initializeCharacter(2);
+
+        
 
         Timer timer = new Timer(10, new ActionListener() {
             @Override
@@ -121,6 +122,19 @@ public class GamePanel extends JPanel {
         }
     }
 
+   public Character initializeCharacter(int characterSelection) {
+        CharacterFactory characterFactory = null;
+
+        if (characterSelection == 1) {
+            characterFactory = new Character1Factory();
+        } else if (characterSelection == 2) {
+            characterFactory = new Character2Factory();
+        }
+
+        c = characterFactory.createPlayerCharacter();
+        return c;
+    }
+
     public void KeyPres(KeyEvent e) {
         controller.handleKeyPress(e);
     }
@@ -138,7 +152,7 @@ public class GamePanel extends JPanel {
 
     public void dispararBala() {
         // Crea una nueva bala en la posición actual del jugador
-        Bala bala = new Bala(playerX, playerY, 10, 5);
+        Bala bala = new Bala(c.getPlayerX(), c.getPlayerY(), 10, 5);
         balas.add(bala);
     }
 
@@ -163,7 +177,7 @@ public class GamePanel extends JPanel {
         // Actualiza la posición de las balas y elimina las que salen de la pantalla
         List<Bala> balasEliminar = new ArrayList<>();
         for (Bala bala : balas) {
-            bala.mover(playerSpeedX + 10, playerSpeedX - 10);
+            bala.mover(c.getPlayerSpeedX() + 10, c.getPlayerSpeedY() - 10);
             if (bala.getX() > getWidth()) {
                 balasEliminar.add(bala);
             }
@@ -188,31 +202,32 @@ public class GamePanel extends JPanel {
     public void update() {
         updateBalas();
         updateSpecialObjects();
+        int a=c.getPlayerY();
         Random random = new Random();
-        playerSpeedY += 1;
-        playerX += playerSpeedX;
-        playerY += playerSpeedY;
-        if (playerSpeedX > 0) {
-            backgroundOffsetX += playerSpeedX;
+        c.setPlayerSpeedY(c.getPlayerSpeedY()+1);
+        c.setPlayerX(c.getPlayerX()+c.getPlayerSpeedX()); 
+        c.setPlayerY(c.getPlayerY()+c.getPlayerSpeedY()); 
+        if (c.getPlayerSpeedX() > 0) {
+            backgroundOffsetX += c.getPlayerSpeedX();
         }
-
-        if (playerY > getHeight() - 50) {
-            playerY = getHeight() - 50;
-            playerSpeedY = 0;
+        
+        if (a > getHeight() - 50) {
+            c.setPlayerY(getHeight() - 50);
+            c.setPlayerSpeedY(0);
         }
 
         // Ajusta la lógica para que el jugador pueda recorrer más allá de los límites
         // originales
-        if (playerX < 0) {
-            playerX = getWidth() - 50;
-        } else if (playerX > getWidth() - 50) {
-            playerX = 0;
+        if (c.getPlayerX() < 0) {
+            c.setPlayerX(getWidth() - 50);
+        } else if (c.getPlayerX() > getWidth() - 50) {
+            c.setPlayerX(0);
         }
 
         // Actualizar la posición de los árboles con el fondo
         for (Object tree : trees) {
-            if (playerSpeedX > 0) {
-                tree.setX(tree.getX() - playerSpeedX);
+            if (c.getPlayerSpeedX() > 0) {
+                tree.setX(tree.getX() - c.getPlayerSpeedX());
             }
             if (tree.getX() + tree.getWidth() < 0) {
                 tree.setX(getWidth() + new Random().nextInt(200));
@@ -225,8 +240,8 @@ public class GamePanel extends JPanel {
 
         // Actualizar la posición de las plataformas con el fondo
         for (Platform platform : platforms) {
-            if (playerSpeedX > 0) {
-                platform.setPlatformX(platform.getPlatformX() - playerSpeedX);
+            if (c.getPlayerSpeedX()> 0) {
+                platform.setPlatformX(platform.getPlatformX() - c.getPlayerSpeedX());
             }
 
             // Si una plataforma se sale completamente de la ventana, colócala en una nueva
@@ -249,13 +264,14 @@ public class GamePanel extends JPanel {
         boolean isOnPlatform = false; // Variable para rastrear si el jugador está en una plataforma
 
         for (Platform platform : platforms) {
-            if (playerX < platform.getPlatformX() + platform.getPlatformWidth() &&
-                    playerX + 50 > platform.getPlatformX() &&
-                    playerY < platform.getPlatformY() + platform.getPlatformHeight() &&
-                    playerY + 50 > platform.getPlatformY()) {
+            
+            if (c.getPlayerX() < platform.getPlatformX() + platform.getPlatformWidth() &&
+                    c.getPlayerX()  + 50 > platform.getPlatformX() &&
+                    c.getPlayerY() < platform.getPlatformY() + platform.getPlatformHeight() &&
+                    c.getPlayerY()+ 50 > platform.getPlatformY()) {
                 // Hay una colisión con la plataforma, ajusta la posición del jugador
-                playerY = platform.getPlatformY() - 50;
-                playerSpeedY = 0;
+                c.setPlayerY(platform.getPlatformY() - 50);
+                c.setPlayerSpeedY(0);
                 isOnPlatform = true; // El jugador está en una plataforma
             }
         }
@@ -263,16 +279,16 @@ public class GamePanel extends JPanel {
         // Si el jugador está en una plataforma, permite saltar incluso si no está en el
         // suelo
         if (isOnPlatform && pressedKeys.contains(KeyEvent.VK_UP)) {
-            playerSpeedY = -15 - jumpBoost;
+            c.setPlayerSpeedY(-15 - c.getJumpBoost());
         }
 
         for (Enemy enemy : enemies) {
-            if (charcontroller.playerCollidesWithEnemy(playerX, playerY, 50, 50, enemy)) {
+            if (charcontroller.playerCollidesWithEnemy(c.getPlayerX(), c.getPlayerY(), 50, 50, enemy)) {
                 // Colisión con un enemigo, reduce una vida
-                playerLives--;
+                c.setPlayerLives(c.getPlayerLives()-1);
 
                 // Verifica si quedan vidas
-                if (playerLives <= 0) {
+                if (c.getPlayerLives() <= 0) {
                     // Si no quedan vidas, muestra "Game Over"
                     JOptionPane.showMessageDialog(this, "Game Over");
 
@@ -298,43 +314,43 @@ public class GamePanel extends JPanel {
             // Mueve los objetos especiales en una dirección constante
             // Mueve los objetos especiales junto con el jugador solo si este se mueve hacia
             // la derecha
-            if (playerSpeedX > 0) {
-                specialObject.setX(specialObject.getX() - playerSpeedX);
+            if (c.getPlayerSpeedX() > 0) {
+                specialObject.setX(specialObject.getX() - c.getPlayerSpeedX());
             }
 
             // Verifica colisiones con las plataformas
             boolean onPlatform = false;
             // Verifica si hay colisión con el jugador
-            if (charcontroller.playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
+            if (charcontroller.playerCollidesWithSpecialObject(c.getPlayerX(), c.getPlayerY(), 50, 50, specialObject)) {
                 // Cambia el color del jugador al color del objeto especial
                 if (specialObject.getColor().equals(Color.GREEN)) {
-                    playerHeigh = 50;
-                    playerWith = 50;
-                    speedBoost = 0;
-                    jumpBoost = 20;
+                    c.setPlayerHeight(50);
+                    c.setPlayerWidth(50); 
+                    c.setSpeedBoost(0);
+                    c.setJumpBoost(20); 
                 }
                 if (specialObject.getColor().equals(Color.CYAN)) {
-                    playerHeigh = 50;
-                    playerWith = 50;
-                    speedBoost = 30;
-                    jumpBoost = 0;
+                    c.setPlayerHeight(50);
+                    c.setPlayerWidth(50); 
+                    c.setSpeedBoost(30);
+                    c.setJumpBoost(0); 
                 }
                 if (specialObject.getColor().equals(Color.YELLOW)) {
                     // Ajusta el tamaño del jugador
-                    playerHeigh = 5;
-                    playerWith = 5;
-                    speedBoost = 5;
-                    jumpBoost = 5;
+                    c.setPlayerHeight(5);
+                    c.setPlayerWidth(5); 
+                    c.setSpeedBoost(5);
+                    c.setJumpBoost(5); 
                     // Duplica la altura (ajusta según tus necesidades)
                 }
                 if (specialObject.getColor().equals(Color.RED)) {
-                    playerHeigh = 50;
-                    playerWith = 50;
-                    speedBoost = 0;
-                    jumpBoost = 0;
-                    playerLives += 1;
+                    c.setPlayerHeight(50);
+                    c.setPlayerWidth(50); 
+                    c.setSpeedBoost(0);
+                    c.setJumpBoost(0); 
+                    c.setPlayerLives(c.getPlayerLives()+1);
                 }
-                playerColor = specialObject.getColor();
+                c.setPlayerColor(specialObject.getColor());
                 gameObjects.remove(specialObject);
                 specialObject.setX(-200);
             }
@@ -362,10 +378,10 @@ public class GamePanel extends JPanel {
     // Reinicia Juego
     public void resetGame() {
         // Restablece los valores del juego al estado inicial
-        playerX = 50;
-        playerY = 300;
-        playerSpeedX = 0;
-        playerSpeedY = 0;
+        c.setPlayerX(50);
+        c.setPlayerY(300);
+        c.setPlayerSpeedX(0);
+        c.setPlayerSpeedY(0);
         // Restablece otras variables y objetos del juego según sea necesario
 
         // Vuelve a generar árboles, plataformas, enemigos, etc.
@@ -408,8 +424,8 @@ public class GamePanel extends JPanel {
         drawProceduralBackground(g);
 
         // Dibujar los elementos del juego
-        g.setColor(playerColor);
-        g.fillRect(playerX, playerY, playerWith, playerHeigh);
+        g.setColor(c.getPlayerColor());
+        g.fillRect(c.getPlayerX(), c.getPlayerY(), c.getPlayerWidth(), c.getPlayerHeight());
         g.setColor(Color.BLACK);
         g.drawString("Vidas: ", 10, 20);
 
@@ -417,7 +433,7 @@ public class GamePanel extends JPanel {
         int circleSpacing = 5; // Ajusta el espacio entre círculos según tus preferencias
 
         // Dibujar círculos representando las vidas restantes
-        for (int i = 0; i < playerLives; i++) {
+        for (int i = 0; i < c.getPlayerLives(); i++) {
             int circleX = 60 + (circleRadius * 2 + circleSpacing) * i;
             int circleY = 10;
 
