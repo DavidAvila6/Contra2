@@ -1,2 +1,6 @@
 /.settings
 /bin
+/.idea
+/.vscode
+/.project
+/.classpath
