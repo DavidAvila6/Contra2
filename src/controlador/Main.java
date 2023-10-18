@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> desarrollo
 package controlador;
 
 import javax.swing.*;

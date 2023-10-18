@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 import Objetos.Bala;
 import Objetos.Cloud;
 import Objetos.Enemy;
@@ -60,6 +59,7 @@ public class GamePanel extends JPanel {
     public Controller controller = new Controller(this);
     public objetoController objcontroller = new objetoController(this);
     public EnemyController EnemyController = new EnemyController(this);
+    public characterController charcontroller = new characterController(this);
     private List<Bala> balas = new ArrayList<>();
     List<Bala> balasParaEliminar = new ArrayList<>();
     List<Enemy> enemigosParaEliminar = new ArrayList<>();
@@ -68,7 +68,7 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         game = new game();
         Random random = new Random();
-        proceduralBackground = new ProceduralBackground("Contra2\\src\\sprite\\bg.jpg",1600,630);
+        proceduralBackground = new ProceduralBackground("Contra2\\src\\sprite\\bg.jpg", 1600, 630);
 
         objcontroller.generateInitialSpecialObjects();
         objcontroller.generateInitialTrees();
@@ -101,9 +101,9 @@ public class GamePanel extends JPanel {
             public void keyPressed(KeyEvent e) {
                 controller.handleKeyPress(e);
 
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                 // Se ha presionado la barra espaciadora, dispara una bala
-                dispararBala();
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    // Se ha presionado la barra espaciadora, dispara una bala
+                    dispararBala();
                 }
             }
 
@@ -111,7 +111,6 @@ public class GamePanel extends JPanel {
             public void keyReleased(KeyEvent e) {
                 controller.handleKeyRelease(e);
             }
-            
 
         });
 
@@ -137,50 +136,34 @@ public class GamePanel extends JPanel {
 
     // Método para obtener un árbol o una nube de manera aleatoria
 
-    public void updatePlayerSpeed() {
-        playerSpeedX = 0;
-        playerSpeedY = 0;
-
-        if (pressedKeys.contains(KeyEvent.VK_LEFT)) {
-            playerSpeedX -= 5 + speedBoost;
-
-        }
-        if (pressedKeys.contains(KeyEvent.VK_RIGHT)) {
-            playerSpeedX += 5 + speedBoost;
-        }
-        if (pressedKeys.contains(KeyEvent.VK_UP)) {
-            if (playerY == getHeight() - 50) {
-                playerSpeedY = -15 - jumpBoost;
-            }
-        }
-    }
     public void dispararBala() {
         // Crea una nueva bala en la posición actual del jugador
         Bala bala = new Bala(playerX, playerY, 10, 5);
         balas.add(bala);
     }
+
     private boolean balaColisionaConEnemy(Bala bala, Enemy enemy) {
         int balaX = bala.getX();
         int balaY = bala.getY();
         int balaWidth = bala.getWidth();
         int balaHeight = bala.getHeight();
-    
+
         int enemyX = enemy.getX();
         int enemyY = enemy.getY();
         int enemyWidth = enemy.getWidth();
         int enemyHeight = enemy.getHeight();
-    
+
         return balaX < enemyX + enemyWidth &&
-               balaX + balaWidth > enemyX &&
-               balaY < enemyY + enemyHeight &&
-               balaY + balaHeight > enemyY;
+                balaX + balaWidth > enemyX &&
+                balaY < enemyY + enemyHeight &&
+                balaY + balaHeight > enemyY;
     }
 
     private void updateBalas() {
         // Actualiza la posición de las balas y elimina las que salen de la pantalla
         List<Bala> balasEliminar = new ArrayList<>();
         for (Bala bala : balas) {
-            bala.mover(playerSpeedX+10, playerSpeedX-10);
+            bala.mover(playerSpeedX + 10, playerSpeedX - 10);
             if (bala.getX() > getWidth()) {
                 balasEliminar.add(bala);
             }
@@ -195,14 +178,13 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-    
+
         // Elimina las balas y enemigos que colisionaron
         balas.removeAll(balasParaEliminar);
         enemies.removeAll(enemigosParaEliminar);
         balas.removeAll(balasEliminar);
     }
 
-   
     public void update() {
         updateBalas();
         updateSpecialObjects();
@@ -285,7 +267,7 @@ public class GamePanel extends JPanel {
         }
 
         for (Enemy enemy : enemies) {
-            if (playerCollidesWithEnemy(playerX, playerY, 50, 50, enemy)) {
+            if (charcontroller.playerCollidesWithEnemy(playerX, playerY, 50, 50, enemy)) {
                 // Colisión con un enemigo, reduce una vida
                 playerLives--;
 
@@ -301,17 +283,9 @@ public class GamePanel extends JPanel {
 
                 // Restablece la posición del jugador o realiza otras acciones según sea
                 // necesario
-                resetPlayerPosition();
+                charcontroller.resetPlayerPosition();
             }
         }
-    }
-
-    public void resetPlayerPosition() {
-        // Restablece la posición del jugador según tus necesidades
-        playerX = 50;
-        playerY = 300;
-        playerSpeedX = 0;
-        playerSpeedY = 0;
     }
 
     public void updateSpecialObjects() {
@@ -331,7 +305,7 @@ public class GamePanel extends JPanel {
             // Verifica colisiones con las plataformas
             boolean onPlatform = false;
             // Verifica si hay colisión con el jugador
-            if (playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
+            if (charcontroller.playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
                 // Cambia el color del jugador al color del objeto especial
                 if (specialObject.getColor().equals(Color.GREEN)) {
                     playerHeigh = 50;
@@ -365,9 +339,9 @@ public class GamePanel extends JPanel {
                 specialObject.setX(-200);
             }
             for (Platform platform : platforms) {
-                if (specialObjectCollidesWithPlatform(specialObject, platform)) {
+                if (objcontroller.specialObjectCollidesWithPlatform(specialObject, platform)) {
                     // Ajusta la posición del objeto especial según la colisión con la plataforma
-                    adjustSpecialObjectPositionOnCollision(specialObject, platform);
+                    objcontroller.adjustSpecialObjectPositionOnCollision(specialObject, platform);
 
                     // Indica que el objeto especial está en una plataforma
                     onPlatform = true;
@@ -380,41 +354,10 @@ public class GamePanel extends JPanel {
                 specialObject.setY(getHeight() - specialObject.getHeight());
             }
         }
-        // Aplica el impulso de salto al jugador
 
-    }
-
-    public boolean playerCollidesWithSpecialObject(int playerX, int playerY, int playerWidth, int playerHeight,
-            SpecialObject specialObject) {
-        return playerX < specialObject.getX() + specialObject.getWidth() &&
-                playerX + playerWidth > specialObject.getX() &&
-                playerY < specialObject.getY() + specialObject.getHeight() &&
-                playerY + playerHeight > specialObject.getY();
-    }
-
-    // Método para verificar colisiones entre un objeto especial y una plataforma
-    public boolean specialObjectCollidesWithPlatform(SpecialObject specialObject, Platform platform) {
-        return specialObject.getX() < platform.getPlatformX() + platform.getPlatformWidth() &&
-                specialObject.getX() + specialObject.getWidth() > platform.getPlatformX() &&
-                specialObject.getY() < platform.getPlatformY() + platform.getPlatformHeight() &&
-                specialObject.getY() + specialObject.getHeight() > platform.getPlatformY();
-    }
-
-    // Método para ajustar la posición de un objeto especial en caso de colisión con
-    // una plataforma
-    public void adjustSpecialObjectPositionOnCollision(SpecialObject specialObject, Platform platform) {
-        // Ajusta la posición del objeto especial para que esté justo encima de la
-        // plataforma
-        specialObject.setY(platform.getPlatformY() - specialObject.getHeight());
     }
 
     // Collisiones player
-    public boolean playerCollidesWithEnemy(int playerX, int playerY, int playerWidth, int playerHeight, Enemy enemy) {
-        return playerX < enemy.getX() + enemy.getWidth() &&
-                playerX + playerWidth > enemy.getX() &&
-                playerY < enemy.getY() + enemy.getHeight() &&
-                playerY + playerHeight > enemy.getY();
-    }
 
     // Reinicia Juego
     public void resetGame() {
@@ -498,7 +441,6 @@ public class GamePanel extends JPanel {
             g.setColor(bala.getColor());
             g.fillRect(bala.getX(), bala.getY(), bala.getWidth(), bala.getHeight());
         }
-        
 
     }
 
@@ -515,7 +457,5 @@ public class GamePanel extends JPanel {
     }
 
     // BALAS by JuloXxx
-
-    
 
 }
