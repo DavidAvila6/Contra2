@@ -30,22 +30,22 @@ public class Controller {
         // Resto del código...
     }
 
-    public void handleKeyPress(KeyEvent e, int playerY, int playerSpeedY, int jumpBoost, int height) {
+    public void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        pressedKeys.add(keyCode);
+        gamePanel.pressedKeys.add(keyCode);
         gamePanel.updatePlayerSpeed();
 
         if (keyCode == KeyEvent.VK_UP) {
             // Permitir saltar en cualquier momento
-            if (playerY == height - 50) {
-                playerSpeedY = -15 - jumpBoost;
+            if (gamePanel.playerY == gamePanel.getHeight() - 50) {
+                gamePanel.playerY = -15 - gamePanel.jumpBoost;
             }
         }
     }
 
     public void handleKeyRelease(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        pressedKeys.remove(keyCode);
+        gamePanel.pressedKeys.remove(keyCode);
         gamePanel.updatePlayerSpeed();
     }
 
