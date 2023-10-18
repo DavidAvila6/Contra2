@@ -58,6 +58,7 @@ public class GamePanel extends JPanel {
     public Controller controller = new Controller(this);
     public objetoController objcontroller = new objetoController(this);
     public EnemyController EnemyController = new EnemyController(this);
+    public characterController charcontroller = new characterController(this);
 
     // Panel Inicial
     public GamePanel() {
@@ -123,8 +124,6 @@ public class GamePanel extends JPanel {
     public game getGame() {
         return game;
     }
-
-    // Método para obtener un árbol o una nube de manera aleatoria
 
     public void updatePlayerSpeed() {
         playerSpeedX = 0;
@@ -226,7 +225,7 @@ public class GamePanel extends JPanel {
         }
 
         for (Enemy enemy : enemies) {
-            if (playerCollidesWithEnemy(playerX, playerY, 50, 50, enemy)) {
+            if (charcontroller.playerCollidesWithEnemy(playerX, playerY, 50, 50, enemy)) {
                 // Colisión con un enemigo, reduce una vida
                 playerLives--;
 
@@ -242,17 +241,9 @@ public class GamePanel extends JPanel {
 
                 // Restablece la posición del jugador o realiza otras acciones según sea
                 // necesario
-                resetPlayerPosition();
+                charcontroller.resetPlayerPosition();
             }
         }
-    }
-
-    public void resetPlayerPosition() {
-        // Restablece la posición del jugador según tus necesidades
-        playerX = 50;
-        playerY = 300;
-        playerSpeedX = 0;
-        playerSpeedY = 0;
     }
 
     public void updateSpecialObjects() {
@@ -272,7 +263,7 @@ public class GamePanel extends JPanel {
             // Verifica colisiones con las plataformas
             boolean onPlatform = false;
             // Verifica si hay colisión con el jugador
-            if (playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
+            if (charcontroller.playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
                 // Cambia el color del jugador al color del objeto especial
                 if (specialObject.getColor().equals(Color.GREEN)) {
                     playerHeigh = 50;
@@ -306,9 +297,9 @@ public class GamePanel extends JPanel {
                 specialObject.setX(-200);
             }
             for (Platform platform : platforms) {
-                if (specialObjectCollidesWithPlatform(specialObject, platform)) {
+                if (objcontroller.specialObjectCollidesWithPlatform(specialObject, platform)) {
                     // Ajusta la posición del objeto especial según la colisión con la plataforma
-                    adjustSpecialObjectPositionOnCollision(specialObject, platform);
+                    objcontroller.adjustSpecialObjectPositionOnCollision(specialObject, platform);
 
                     // Indica que el objeto especial está en una plataforma
                     onPlatform = true;
@@ -321,41 +312,10 @@ public class GamePanel extends JPanel {
                 specialObject.setY(getHeight() - specialObject.getHeight());
             }
         }
-        // Aplica el impulso de salto al jugador
 
-    }
-
-    public boolean playerCollidesWithSpecialObject(int playerX, int playerY, int playerWidth, int playerHeight,
-            SpecialObject specialObject) {
-        return playerX < specialObject.getX() + specialObject.getWidth() &&
-                playerX + playerWidth > specialObject.getX() &&
-                playerY < specialObject.getY() + specialObject.getHeight() &&
-                playerY + playerHeight > specialObject.getY();
-    }
-
-    // Método para verificar colisiones entre un objeto especial y una plataforma
-    public boolean specialObjectCollidesWithPlatform(SpecialObject specialObject, Platform platform) {
-        return specialObject.getX() < platform.getPlatformX() + platform.getPlatformWidth() &&
-                specialObject.getX() + specialObject.getWidth() > platform.getPlatformX() &&
-                specialObject.getY() < platform.getPlatformY() + platform.getPlatformHeight() &&
-                specialObject.getY() + specialObject.getHeight() > platform.getPlatformY();
-    }
-
-    // Método para ajustar la posición de un objeto especial en caso de colisión con
-    // una plataforma
-    public void adjustSpecialObjectPositionOnCollision(SpecialObject specialObject, Platform platform) {
-        // Ajusta la posición del objeto especial para que esté justo encima de la
-        // plataforma
-        specialObject.setY(platform.getPlatformY() - specialObject.getHeight());
     }
 
     // Collisiones player
-    public boolean playerCollidesWithEnemy(int playerX, int playerY, int playerWidth, int playerHeight, Enemy enemy) {
-        return playerX < enemy.getX() + enemy.getWidth() &&
-                playerX + playerWidth > enemy.getX() &&
-                playerY < enemy.getY() + enemy.getHeight() &&
-                playerY + playerHeight > enemy.getY();
-    }
 
     // Reinicia Juego
     public void resetGame() {

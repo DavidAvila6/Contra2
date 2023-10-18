@@ -1,6 +1,6 @@
 package controlador;
 
-import controlador.GamePanel;
+
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -136,6 +136,20 @@ public class objetoController {
             gamePanel.specialObjects.add(newSpecial);
             gamePanel.gameObjects.add(newSpecial);
         }
+    }
+
+    // Método para verificar colisiones entre un objeto especial y una plataforma
+    public boolean specialObjectCollidesWithPlatform(SpecialObject specialObject, Platform platform) {
+        return specialObject.getX() < platform.getPlatformX() + platform.getPlatformWidth() &&
+                specialObject.getX() + specialObject.getWidth() > platform.getPlatformX() &&
+                specialObject.getY() < platform.getPlatformY() + platform.getPlatformHeight() &&
+                specialObject.getY() + specialObject.getHeight() > platform.getPlatformY();
+    }
+
+    public void adjustSpecialObjectPositionOnCollision(SpecialObject specialObject, Platform platform) {
+        // Ajusta la posición del objeto especial para que esté justo encima de la
+        // plataforma
+        specialObject.setY(platform.getPlatformY() - specialObject.getHeight());
     }
 
 }

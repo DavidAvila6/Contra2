@@ -18,7 +18,7 @@ public class Main {
             @Override
             public void keyPressed(KeyEvent e) {
                 gamePanel.KeyPres(e);
-                
+
             }
 
             @Override
