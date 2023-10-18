@@ -76,7 +76,7 @@ public class GamePanel extends JPanel {
 
         game = new game();
         Random random = new Random();
-        proceduralBackground = new ProceduralBackground("Contra2\\src\\sprite\\bg.jpg", 1600, 630);
+        proceduralBackground = new ProceduralBackground("src\\sprite\\fondo.png", 1600, 630);
 
         objcontroller.generateInitialSpecialObjects();
         objcontroller.generateInitialTrees();
@@ -174,8 +174,10 @@ public class GamePanel extends JPanel {
 
     public void dispararBala() {
         // Crea una nueva bala en la posición actual del jugador
-        Bala bala = new Bala(playerX, playerY, 10, 5);
+        Image balaImage = new ImageIcon("src\\sprite\\bala.jpg").getImage();
+        Bala bala = new Bala(playerX, playerY, 10, 5, balaImage);
         balas.add(bala);
+        
     }
 
     private boolean balaColisionaConEnemy(Bala bala, Enemy enemy) {
@@ -247,17 +249,17 @@ public class GamePanel extends JPanel {
 
         // Actualizar la posición de los árboles con el fondo
         for (Object tree : trees) {
-            if (playerSpeedX > 0) {
-                tree.setX(tree.getX() - playerSpeedX);
-            }
-            if (tree.getX() + tree.getWidth() < 0) {
-                tree.setX(getWidth() + new Random().nextInt(200));
-                tree.setY(450);
-                if (tree instanceof Cloud) {
-                    tree.setY(150);
+                if (playerSpeedX > 0) {
+                    tree.setX(tree.getX() -playerSpeedX );
+                }
+                if (tree.getX() + tree.getWidth() < 0) {
+                    tree.setX(getWidth() + new Random().nextInt(200));
+                    tree.setY(450);
+                    if (tree instanceof Cloud) {
+                        tree.setY(150);
+                    }
                 }
             }
-        }
 
         // Actualizar la posición de las plataformas con el fondo
         for (Platform platform : platforms) {
@@ -279,6 +281,7 @@ public class GamePanel extends JPanel {
                     platform.setPlatformY(random.nextInt(51) + 500);
                 }
             }
+            
         }
 
         // Colisiones
@@ -352,14 +355,14 @@ public class GamePanel extends JPanel {
                 if (specialObject.getColor().equals(Color.CYAN)) {
                     playerHeigh = 50;
                     playerWith = 50;
-                    speedBoost = 30;
+                    speedBoost = 3;
                     jumpBoost = 0;
                 }
                 if (specialObject.getColor().equals(Color.YELLOW)) {
                     // Ajusta el tamaño del jugador
-                    playerHeigh = 5;
-                    playerWith = 5;
-                    speedBoost = 5;
+                    playerHeigh = 60;
+                    playerWith = 60;
+                    speedBoost = 0;
                     jumpBoost = 5;
                     // Duplica la altura (ajusta según tus necesidades)
                 }
@@ -442,7 +445,13 @@ public class GamePanel extends JPanel {
 
         // Dibujar el fondo procedimental
         drawProceduralBackground(g);
+        for (Object tree : trees) {
+            int x = tree.getX(); // Ajustar la posición de los árboles según la velocidad del jugador
+            int y = tree.getY();
 
+            // En lugar de dibujar un rectángulo de color, dibuja la imagen del árbol
+            g.drawImage(tree.getImage(), x, y, tree.getWidth(), tree.getHeight(), null);
+        }
         // Dibujar los elementos del juego
         g.drawImage(pahtimagen, playerX, playerY, playerWith+20,playerHeigh+20,null);
         g.setColor(Color.BLACK);
@@ -464,17 +473,22 @@ public class GamePanel extends JPanel {
             gameObject.draw(g);
         }
         // Dibujar los árboles
-        for (Object tree : trees) {
-            int x = tree.getX(); // Ajustar la posición de los árboles según la velocidad del jugador
-            int y = tree.getY();
+        // Antes del bucle, carga la imagen del árbol en alguna estructura de datos (por
+        // ejemplo, en un campo de la clase o en el constructor)
+        
 
-            Color treeColor = tree.getColor();
-            g.setColor(treeColor);
-            g.fillRect(x, y, tree.getWidth(), tree.getHeight());
-        }
+        // Dentro del bucle para dibujar los árboles
+        
+
+        // Antes del bucle, carga la imagen de la bala en alguna estructura de datos
+        // (por ejemplo, en un campo de la clase o en el constructor)
+        
+
+        // Dentro del bucle para dibujar las balas
         for (Bala bala : balas) {
-            g.setColor(bala.getColor());
-            g.fillRect(bala.getX(), bala.getY(), bala.getWidth(), bala.getHeight());
+            
+            // En lugar de dibujar un rectángulo de color, dibuja la imagen de la bala
+            g.drawImage(bala.getImage(), bala.getX(), bala.getY(), bala.getWidth(), bala.getHeight(), null);
         }
 
     }
