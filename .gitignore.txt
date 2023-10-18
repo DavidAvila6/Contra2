@@ -1,0 +1,5 @@
+# Ignorar todos los archivos y directorios
+*
+
+# Excepto la carpeta 'src' y su contenido
+!src/
