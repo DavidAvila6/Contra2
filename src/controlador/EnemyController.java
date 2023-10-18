@@ -67,7 +67,7 @@ public class EnemyController {
     }
 
     public void updateEnemies() {
-        if (gamePanel.enemies.size() ==2 ){
+        if (gamePanel.enemies.size() < 2 ){
             
             generateInitialEnemies();
         }
