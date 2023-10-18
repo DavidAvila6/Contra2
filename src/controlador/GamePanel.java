@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 import Objetos.Bala;
 import Objetos.Cloud;
 import Objetos.Enemy;
@@ -68,7 +67,7 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         game = new game();
         Random random = new Random();
-        proceduralBackground = new ProceduralBackground("sprite\\bg.jpg",1600,630);
+        proceduralBackground = new ProceduralBackground("src\\sprite\\bg.jpg", 1600, 630);
 
         objcontroller.generateInitialSpecialObjects();
         objcontroller.generateInitialTrees();
@@ -101,9 +100,9 @@ public class GamePanel extends JPanel {
             public void keyPressed(KeyEvent e) {
                 controller.handleKeyPress(e);
 
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                 // Se ha presionado la barra espaciadora, dispara una bala
-                dispararBala();
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    // Se ha presionado la barra espaciadora, dispara una bala
+                    dispararBala();
                 }
             }
 
@@ -111,7 +110,6 @@ public class GamePanel extends JPanel {
             public void keyReleased(KeyEvent e) {
                 controller.handleKeyRelease(e);
             }
-            
 
         });
 
@@ -154,33 +152,40 @@ public class GamePanel extends JPanel {
             }
         }
     }
+
     public void dispararBala() {
         // Crea una nueva bala en la posición actual del jugador
-        Bala bala = new Bala(playerX, playerY, 10, 5);
+        Image balaImage = new ImageIcon("src\\sprite\\bala.jpg").getImage();
+        Bala bala = new Bala(playerX, playerY, 10, 5, balaImage);
         balas.add(bala);
+        
     }
+
     private boolean balaColisionaConEnemy(Bala bala, Enemy enemy) {
         int balaX = bala.getX();
         int balaY = bala.getY();
         int balaWidth = bala.getWidth();
         int balaHeight = bala.getHeight();
-    
+
         int enemyX = enemy.getX();
         int enemyY = enemy.getY();
         int enemyWidth = enemy.getWidth();
         int enemyHeight = enemy.getHeight();
-    
+        
+
         return balaX < enemyX + enemyWidth &&
-               balaX + balaWidth > enemyX &&
-               balaY < enemyY + enemyHeight &&
-               balaY + balaHeight > enemyY;
+                balaX + balaWidth > enemyX &&
+                balaY < enemyY + enemyHeight &&
+                balaY + balaHeight > enemyY;
+
+
     }
 
     private void updateBalas() {
         // Actualiza la posición de las balas y elimina las que salen de la pantalla
         List<Bala> balasEliminar = new ArrayList<>();
         for (Bala bala : balas) {
-            bala.mover(playerSpeedX+10, playerSpeedX-10);
+            bala.mover(playerSpeedX + 10, playerSpeedX - 10);
             if (bala.getX() > getWidth()) {
                 balasEliminar.add(bala);
             }
@@ -195,14 +200,13 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-    
+
         // Elimina las balas y enemigos que colisionaron
         balas.removeAll(balasParaEliminar);
         enemies.removeAll(enemigosParaEliminar);
         balas.removeAll(balasEliminar);
     }
 
-   
     public void update() {
         updateBalas();
         updateSpecialObjects();
@@ -234,9 +238,9 @@ public class GamePanel extends JPanel {
             }
             if (tree.getX() + tree.getWidth() < 0) {
                 tree.setX(getWidth() + new Random().nextInt(200));
-                tree.setY(450);
+                tree.setX(450);
                 if (tree instanceof Cloud) {
-                    tree.setY(150);
+                    tree.setX(150);
                 }
             }
         }
@@ -486,19 +490,29 @@ public class GamePanel extends JPanel {
             gameObject.draw(g);
         }
         // Dibujar los árboles
+        // Antes del bucle, carga la imagen del árbol en alguna estructura de datos (por
+        // ejemplo, en un campo de la clase o en el constructor)
+        Image oakImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+
+        // Dentro del bucle para dibujar los árboles
         for (Object tree : trees) {
             int x = tree.getX(); // Ajustar la posición de los árboles según la velocidad del jugador
             int y = tree.getY();
 
-            Color treeColor = tree.getColor();
-            g.setColor(treeColor);
-            g.fillRect(x, y, tree.getWidth(), tree.getHeight());
+            // En lugar de dibujar un rectángulo de color, dibuja la imagen del árbol
+            g.drawImage(oakImage, x, y, tree.getWidth(), tree.getHeight(), null);
         }
+
+        // Antes del bucle, carga la imagen de la bala en alguna estructura de datos
+        // (por ejemplo, en un campo de la clase o en el constructor)
+        Image balaImage = new ImageIcon("src\\sprite\\bala.jpg").getImage();
+
+        // Dentro del bucle para dibujar las balas
         for (Bala bala : balas) {
-            g.setColor(bala.getColor());
-            g.fillRect(bala.getX(), bala.getY(), bala.getWidth(), bala.getHeight());
+            
+            // En lugar de dibujar un rectángulo de color, dibuja la imagen de la bala
+            g.drawImage(balaImage, bala.getX(), bala.getY(), bala.getWidth(), bala.getHeight(), null);
         }
-        
 
     }
 
@@ -515,7 +529,5 @@ public class GamePanel extends JPanel {
     }
 
     // BALAS by JuloXxx
-
-    
 
 }

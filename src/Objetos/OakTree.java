@@ -2,65 +2,70 @@ package Objetos;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.swing.ImageIcon;
-import java.util.Random;
 
 public class OakTree extends Object {
-    private Image treeImage;
-    private int treeHeight;
-    private int treeWidth;
-    private int treeX;
-    private int treeY;
-
-    public OakTree(int treeX, int treeY, int treeWidth, int treeHeight) {
+    private Image Image;
+    
+    public int x;
+    public int y;
+    public int width;
+    public int height;
+    public OakTree(int X, int Y, int Width, int Height, Image Image) {
         // Constructor con parámetros
-        super(treeX, treeY, treeWidth, treeHeight);
-       
-        this.treeHeight = 100;
-        this.treeWidth = 50;
-        this.treeX = 200;
-        this.treeY = 400;
-
-        Random random = new Random();
-        this.treeX = random.nextInt(800) + 800; // Ajusta según el tamaño de tu ventana
-        this.treeY = 450;
-        treeImage = new ImageIcon("sprite\\pngwing.com.png").getImage();
+        super(X, Y, Width, Height, Image);
+        this.Image = Image;
     }
 
-    public int getTreeHeight() {
-        return treeHeight;
+    public Image getImage() {
+        return Image;
     }
 
-    public void setTreeHeight(int treeHeight) {
-        this.treeHeight = treeHeight;
+    public void setImage(Image Image) {
+        this.Image = Image;
     }
 
-    public int getTreeWidth() {
-        return treeWidth;
+    public int getX() {
+        return x;
     }
 
-    public void setTreeWidth(int treeWidth) {
-        this.treeWidth = treeWidth;
+    
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public int getTreeX() {
-        return treeX;
+    
+    public int getY() {
+        return y;
     }
 
-    public void setTreeX(int treeX) {
-        this.treeX = treeX;
+    
+    public void setY(int y) {
+        this.y = y;
     }
 
-    public int getTreeY() {
-        return treeY;
+    
+    public int getWidth() {
+        return width;
     }
 
-    public void setTreeY(int treeY) {
-        this.treeY = treeY;
+    
+    public void setWidth(int width) {
+        this.width = width;
     }
+
+    
+    public int getHeight() {
+        return height;
+    }
+
+    
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     public void draw(Graphics g) {
         // Dibuja la imagen del árbol en lugar de un rectángulo
-        g.drawImage(treeImage, getX(), getY(), getWidth(), getHeight(), null);
+        g.drawImage(Image, getX(), getY(), getWidth(), getHeight(), null);
     }
 
 }

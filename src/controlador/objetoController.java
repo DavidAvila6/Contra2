@@ -3,9 +3,12 @@ package controlador;
 import controlador.GamePanel;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.ImageIcon;
 
 import Objetos.Cloud;
 import Objetos.OakTree;
@@ -90,12 +93,14 @@ public class objetoController {
 
         switch (objectType) {
             case 0:
-                // Devuelve un árbol con dimensiones específicas
-                return new OakTree(x, y, 50, 100); // Ajusta las dimensiones según tus necesidades
+                Image oakImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+                return new OakTree(x, y, 50, 100, oakImage);
+                
             case 1:
                 // Devuelve una nube con dimensiones específicas
-                Cloud cloud = new Cloud(x, y, 100, 70); // Ajusta las dimensiones según tus necesidades
-                cloud.setColor(Color.WHITE); // Establece el color de la nube
+                Image cloudImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+                Cloud cloud = new Cloud(x, y, 100, 70, cloudImage); // Ajusta las dimensiones según tus necesidades
+                 // Establece el color de la nube
                 return cloud;
             // Puedes agregar más casos para otros tipos si es necesario
             default:

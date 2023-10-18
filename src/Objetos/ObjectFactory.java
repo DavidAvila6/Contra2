@@ -1,14 +1,15 @@
 package Objetos;
-// ObjectFactory.javapackage Objetos;
 
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.ImageIcon;
 
 public class ObjectFactory {
-    private static Map<String, Object> ObjectCache = new HashMap<>();
+    private static Map<String, Object> objectCache = new HashMap<>();
 
     public static Object getObject(String type) {
-        Object cachedObject = ObjectCache.get(type);
+        Object cachedObject = objectCache.get(type);
         if (cachedObject != null) {
             try {
                 return cachedObject.clone();
@@ -20,17 +21,25 @@ public class ObjectFactory {
     }
 
     public static void loadCache() {
-        // Carga inicial de diferentes tipos de árboles en el cache
-        OakTree oakObject = new OakTree(0, 0, 0, 0);
-        ObjectCache.put("oak", oakObject);
+        // Carga inicial de diferentes tipos de objetos en el cache
 
-        // Agrega más tipos de árboles según sea necesario
+        Image oakImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+        OakTree oakObject = new OakTree(0, 0, 0, 0, oakImage);
+        objectCache.put("oak", oakObject);
+
+        Image cloudImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+        Cloud cloudObject = new Cloud(0, 0, 0, 0, cloudImage);
+        objectCache.put("cloud", cloudObject);
+
+        // Agrega más tipos de objetos según sea necesario
     }
 
     // Nueva fábrica para crear nubes
     public static Cloud createCloud(int x, int y, int width, int height) {
-        return new Cloud(x, y, width, height);
+        Image cloudImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+        return new Cloud(x, y, width, height, cloudImage);
     }
 
-    // Agrega más fábricas según sea necesario para otros tipos de objetos especiales
+    // Agrega más fábricas según sea necesario para otros tipos de objetos
+    // especiales
 }
