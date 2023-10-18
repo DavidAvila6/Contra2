@@ -33,8 +33,8 @@ public class Main {
         characterPanel.setLayout(new GridLayout(1, 2));
 
         // Escala las imágenes de los personajes al tamaño deseado
-        ImageIcon character1Icon = scaleImage("Contra2\\src\\sprite\\pngwing.com.png", 100, 300); // Reemplaza con la ruta correcta
-        ImageIcon character2Icon = scaleImage("Contra2\\src\\sprite\\bg.jpg", 100, 100); // Reemplaza con la ruta correcta
+        ImageIcon character1Icon = scaleImage("src\\sprite\\pngwing.com.png", 100, 300); // Reemplaza con la ruta correcta
+        ImageIcon character2Icon = scaleImage("src\\sprite\\bg.jpg", 100, 100); // Reemplaza con la ruta correcta
 
         JLabel character1Label = new JLabel(character1Icon);
         JLabel character2Label = new JLabel(character2Icon);

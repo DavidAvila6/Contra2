@@ -16,7 +16,7 @@ public class Character1 extends Character {
         super();
         setSpeedBoost(SpeedBoost);
         setPlayerColor(Color.green);
-        setImagen("Contra2\\src\\sprite\\pngwing.com.png");
+        setImagen("src\\sprite\\pngwing.com.png");
     }
     
     }
