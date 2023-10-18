@@ -6,9 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class Main {
     private static JFrame characterSelectionFrame;
@@ -32,9 +29,11 @@ public class Main {
         JPanel characterPanel = new JPanel();
         characterPanel.setLayout(new GridLayout(1, 2));
 
+        JLabel titleLabel = new JLabel("Selecciona un personaje:");
+
         // Escala las imágenes de los personajes al tamaño deseado
         ImageIcon character1Icon = scaleImage("Contra2\\src\\sprite\\pngwing.com.png", 100, 300); // Reemplaza con la ruta correcta
-        ImageIcon character2Icon = scaleImage("Contra2\\src\\sprite\\bg.jpg", 100, 100); // Reemplaza con la ruta correcta
+        ImageIcon character2Icon = scaleImage("Contra2\\src\\sprite\\pngwing.com (1).png", 100, 300); // Reemplaza con la ruta correcta
 
         JLabel character1Label = new JLabel(character1Icon);
         JLabel character2Label = new JLabel(character2Icon);
@@ -52,7 +51,7 @@ public class Main {
                 startGameWithCharacter(2);
             }
         });
-
+        characterPanel.add(titleLabel);
         characterPanel.add(character1Label);
         characterPanel.add(character2Label);
 
