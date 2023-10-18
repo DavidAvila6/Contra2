@@ -29,16 +29,12 @@ public class Main {
         JPanel characterPanel = new JPanel();
         characterPanel.setLayout(new GridLayout(1, 2));
 
-        JLabel titleLabel = new JLabel("Selecciona un personaje:");
+        
+        
 
         // Escala las imágenes de los personajes al tamaño deseado
-<<<<<<< HEAD
         ImageIcon character1Icon = scaleImage("Contra2\\src\\sprite\\pngwing.com.png", 100, 300); // Reemplaza con la ruta correcta
         ImageIcon character2Icon = scaleImage("Contra2\\src\\sprite\\pngwing.com (1).png", 100, 300); // Reemplaza con la ruta correcta
-=======
-        ImageIcon character1Icon = scaleImage("src\\sprite\\pngwing.com.png", 100, 300); // Reemplaza con la ruta correcta
-        ImageIcon character2Icon = scaleImage("src\\sprite\\bg.jpg", 100, 100); // Reemplaza con la ruta correcta
->>>>>>> c959b7ea05a2e6c524e4f106a8dedcb4139f3fe8
 
         JLabel character1Label = new JLabel(character1Icon);
         JLabel character2Label = new JLabel(character2Icon);
@@ -56,7 +52,7 @@ public class Main {
                 startGameWithCharacter(2);
             }
         });
-        characterPanel.add(titleLabel);
+        
         characterPanel.add(character1Label);
         characterPanel.add(character2Label);
 
