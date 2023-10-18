@@ -8,6 +8,7 @@ import java.util.Set;
 import modelo.game;
 import controlador.GamePanel;
 import Objetos.Enemy;
+import Objetos.EnemyFactory;
 import Objetos.Platform;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,8 +47,8 @@ public class EnemyController {
     }
 
     public void generateInitialEnemies() {
-        int enemyWidth = 30;
-        int enemyHeight = 30;
+        int enemyWidth = 50;
+        int enemyHeight = 50;
         int enemySpacingX = 200;
         int a = gamePanel.getWidth();
         
@@ -57,7 +59,8 @@ public class EnemyController {
         for (int i = 0; i < 5; i++) {
             int enemyX = random.nextInt(200) + i * enemySpacingX+a; // Ajusta según el rango deseado
             int enemyY = random.nextInt(51) + 475; // Ajusta según la altura deseada de los enemigos
-            Enemy newEnemy = new Enemy(enemyX, enemyY, enemyWidth, enemyHeight, Color.BLACK, enemySpeed, 0);
+            String imagePath = "src\\sprite\\enemy.gif";
+            Enemy newEnemy = EnemyFactory.getEnemy("tipo_enemigo", enemyX, enemyY, enemyWidth, enemyHeight, imagePath, enemySpeed, 0);
             gamePanel.enemies.add(newEnemy);
             gamePanel.gameObjects.add(newEnemy);
         }

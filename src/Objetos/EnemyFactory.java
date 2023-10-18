@@ -1,13 +1,13 @@
 package Objetos;
 
-import java.awt.*;
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EnemyFactory {
     private static Map<String, Enemy> enemyCache = new HashMap<>();
 
-    public static Enemy getEnemy(String type, int x, int y, int width, int height, Color color, int speedX, int speedY) {
+    public static Enemy getEnemy(String type, int x, int y, int width, int height, String imagePath, int speedX, int speedY) {
         Enemy cachedEnemy = enemyCache.get(type);
         if (cachedEnemy != null) {
             try {
@@ -24,7 +24,7 @@ public class EnemyFactory {
         }
 
         // Si no existe en el caché, crear uno nuevo y agregarlo al caché
-        Enemy newEnemy = new Enemy(x, y, width, height, color, speedX, speedY);
+        Enemy newEnemy = new Enemy(x, y, width, height, imagePath, speedX, speedY);
         enemyCache.put(type, newEnemy);
         return newEnemy;
     }

@@ -93,7 +93,7 @@ public class objetoController {
 
         switch (objectType) {
             case 0:
-                Image oakImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+                Image oakImage = new ImageIcon("src\\sprite\\tree.gif").getImage();
                 
                 return new OakTree(x, y, 580, 800, oakImage);
                 

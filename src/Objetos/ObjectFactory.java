@@ -27,7 +27,7 @@ public class ObjectFactory {
         OakTree oakObject = new OakTree(0, 0, 0, 0, oakImage);
         objectCache.put("oak", oakObject);
 
-        Image cloudImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+        Image cloudImage = new ImageIcon("src\\sprite\\tree.gif").getImage();
         Cloud cloudObject = new Cloud(0, 0, 0, 0, cloudImage);
         objectCache.put("cloud", cloudObject);
 
