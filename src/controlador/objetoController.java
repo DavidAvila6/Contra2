@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Objetos.Cloud;
+import Objetos.OakTree;
 import Objetos.Platform;
 import Objetos.SpecialObject;
 import Objetos.SpecialObjectFactory;
@@ -37,7 +39,7 @@ public class objetoController {
             // jugador
 
             // Agrega árboles o nubes aleatoriamente
-            Object newTree = gamePanel.getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
+            Object newTree = getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
 
             gamePanel.trees.add((Objetos.Object) newTree);
 
@@ -79,6 +81,25 @@ public class objetoController {
                     Color.MAGENTA);
             gamePanel.platforms.add(newPlatform);
             gamePanel.gameObjects.add(newPlatform);
+        }
+    }
+
+    public Object getRandomTreeOrCloud(int x, int y, int width, int height) {
+        Random random = new Random();
+        int objectType = random.nextInt(2); // Cambia el número según la cantidad de tipos (árboles y nubes)
+
+        switch (objectType) {
+            case 0:
+                // Devuelve un árbol con dimensiones específicas
+                return new OakTree(x, y, 50, 100); // Ajusta las dimensiones según tus necesidades
+            case 1:
+                // Devuelve una nube con dimensiones específicas
+                Cloud cloud = new Cloud(x, y, 100, 70); // Ajusta las dimensiones según tus necesidades
+                cloud.setColor(Color.WHITE); // Establece el color de la nube
+                return cloud;
+            // Puedes agregar más casos para otros tipos si es necesario
+            default:
+                return null;
         }
     }
 
