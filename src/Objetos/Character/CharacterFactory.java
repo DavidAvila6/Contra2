@@ -1,4 +1,4 @@
-package Objetos;
+package Objetos.Character;
 
 public interface CharacterFactory {
     

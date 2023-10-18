@@ -1,4 +1,4 @@
-package Objetos;
+package Objetos.Character;
 import java.awt.Color;
 
 public abstract class  Character {        
