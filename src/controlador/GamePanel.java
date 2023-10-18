@@ -17,6 +17,7 @@ import Objetos.Object;
 import modelo.GameObject;
 import modelo.game;
 import Objetos.ObjectFactory;
+import controlador.objetoController;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -41,12 +42,12 @@ public class GamePanel extends JPanel {
     public int backgroundSpeed = 2;
     public Set<Integer> pressedKeys = new HashSet<>();
     public List<Object> trees = new ArrayList<>();
-    
+
     public boolean movingRight = true; // Variable para rastrear la dirección de movimiento
     public Image backgroundImage;
     public List<Platform> platforms = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
-     // Ajusta la fuerza de la gravedad según sea necesario
+    // Ajusta la fuerza de la gravedad según sea necesario
     public long timeSinceDirectionChange = System.currentTimeMillis();
     public static final int TIME_TO_CHANGE_DIRECTION = 10;
     public ProceduralBackground proceduralBackground;
@@ -55,6 +56,7 @@ public class GamePanel extends JPanel {
     public List<GameObject> gameObjects = new ArrayList<>();
     public game game;
     public Controller controller = new Controller(this);
+    public objetoController objcontroller = new objetoController(this);
     public EnemyController EnemyController = new EnemyController(this);
 
     // Panel Inicial
@@ -81,7 +83,7 @@ public class GamePanel extends JPanel {
         Timer specialObjectTimer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateSpecialObjectAbovePlayer();
+                objcontroller.generateSpecialObjectAbovePlayer();
 
             }
         });
@@ -122,94 +124,7 @@ public class GamePanel extends JPanel {
     }
 
     // Método para obtener un árbol o una nube de manera aleatoria
-    public Object getRandomTreeOrCloud(int x, int y, int width, int height) {
-        Random random = new Random();
-        int objectType = random.nextInt(2); // Cambia el número según la cantidad de tipos (árboles y nubes)
 
-        switch (objectType) {
-            case 0:
-                // Devuelve un árbol con dimensiones específicas
-                return new OakTree(x, y, 50, 100); // Ajusta las dimensiones según tus necesidades
-            case 1:
-                // Devuelve una nube con dimensiones específicas
-                Cloud cloud = new Cloud(x, y, 100, 70); // Ajusta las dimensiones según tus necesidades
-                cloud.setColor(Color.WHITE); // Establece el color de la nube
-                return cloud;
-            // Puedes agregar más casos para otros tipos si es necesario
-            default:
-                return null;
-        }
-    }
-
-    // Inicializa Plataformas
-    public void generateInitialPlatforms() {
-        int bluePlatformWidth = 350; // Ancho de las plataformas azules
-        int bluePlatformHeight = 10;
-        int bluePlatformSpacingX = 400;
-        Random random = new Random();
-
-        for (int i = 0; i < 4; i++) {
-            int bluePlatformX = playerX + i * bluePlatformSpacingX;
-            int bluePlatformY = random.nextInt(51) + 500; // Ajusta según la altura deseada de las plataformas azules
-            Platform newPlatform = new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight,
-                    Color.BLUE);
-            platforms.add(newPlatform);
-            gameObjects.add(newPlatform);
-        }
-
-        int purplePlatformWidth = 250; // Ancho de las plataformas moradas
-        int purplePlatformHeight = 20;
-        int purplePlatformSpacingX = 600; // Ajusta el espaciado entre las plataformas moradas
-
-        for (int i = 0; i < 5; i++) {
-            int purplePlatformX = playerX + i * purplePlatformSpacingX;
-            int purplePlatformY;
-
-            // Ajusta según la altura deseada de las plataformas moradas y su posición en la
-            // ventana
-            if (i % 2 == 0) {
-                purplePlatformY = random.nextInt(51) + 350;
-            } else {
-                purplePlatformY = random.nextInt(51) + 150; // Coloca las plataformas moradas más arriba
-            }
-            Platform newPlatform = new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth,
-                    purplePlatformHeight,
-                    Color.MAGENTA);
-            platforms.add(newPlatform);
-            gameObjects.add(newPlatform);
-        }
-    }
-
-    
-
-    public void generateInitialSpecialObjects() {
-        int specialObjectWidth = 30;
-        int specialObjectHeight = 30;
-        int specialObjectSpacingX = 200;
-        Random random = new Random();
-
-        for (int i = 0; i < 2; i++) {
-            int specialObjectX = playerX + i * specialObjectSpacingX;
-            int specialObjectY = random.nextInt(51) + 200; // Ajusta según la altura deseada de los objetos especiales
-
-            SpecialObject newSpecial = SpecialObjectFactory.createSpecialObject(specialObjectX, specialObjectY,
-                    specialObjectWidth, specialObjectHeight);
-            specialObjects.add(newSpecial);
-            gameObjects.add(newSpecial);
-        }
-    }
-
-    
-
-    
-
-    
-
-    // Keys
-
-    // Keys
-
-    // Update enemigos iniciales
     public void updatePlayerSpeed() {
         playerSpeedX = 0;
         playerSpeedY = 0;
@@ -339,24 +254,6 @@ public class GamePanel extends JPanel {
         playerSpeedY = 0;
     }
 
-    public void generateSpecialObjectAbovePlayer() {
-
-        // Ajusta las dimensiones del objeto especial según tus necesidades
-        int specialObjectWidth = 30;
-        int specialObjectHeight = 30;
-
-        // Ajusta la posición del objeto especial para que aparezca encima del jugador
-        int specialObjectX = playerX;
-        int specialObjectY = playerY - specialObjectHeight - 200;
-
-        // Crea un nuevo objeto especial y agrégalo a la lista
-        SpecialObject specialObject = SpecialObjectFactory.createSpecialObject(
-                specialObjectX, specialObjectY, specialObjectWidth, specialObjectHeight);
-        specialObjects.add(specialObject);
-        gameObjects.add(specialObject);
-
-    }
-
     public void updateSpecialObjects() {
         int gravity = 1; // Ajusta según la fuerza de gravedad deseada
         int speedX = 2;
@@ -469,8 +366,8 @@ public class GamePanel extends JPanel {
         // Restablece otras variables y objetos del juego según sea necesario
 
         // Vuelve a generar árboles, plataformas, enemigos, etc.
-        controller.generateInitialTrees();
-        generateInitialPlatforms();
+        objcontroller.generateInitialTrees();
+        objcontroller.generateInitialPlatforms();
         EnemyController.generateInitialEnemies();
 
         // Reinicia cualquier otra lógica de juego que necesites
