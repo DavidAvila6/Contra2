@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 import Objetos.Platform;
+import Objetos.SpecialObject;
+import Objetos.SpecialObjectFactory;
 
 public class objetoController {
     private GamePanel gamePanel;
@@ -77,6 +79,41 @@ public class objetoController {
                     Color.MAGENTA);
             gamePanel.platforms.add(newPlatform);
             gamePanel.gameObjects.add(newPlatform);
+        }
+    }
+
+    public void generateSpecialObjectAbovePlayer() {
+
+        // Ajusta las dimensiones del objeto especial según tus necesidades
+        int specialObjectWidth = 30;
+        int specialObjectHeight = 30;
+
+        // Ajusta la posición del objeto especial para que aparezca encima del jugador
+        int specialObjectX = gamePanel.playerX;
+        int specialObjectY = gamePanel.playerY - specialObjectHeight - 200;
+
+        // Crea un nuevo objeto especial y agrégalo a la lista
+        SpecialObject specialObject = SpecialObjectFactory.createSpecialObject(
+                specialObjectX, specialObjectY, specialObjectWidth, specialObjectHeight);
+        gamePanel.specialObjects.add(specialObject);
+        gamePanel.gameObjects.add(specialObject);
+
+    }
+
+    public void generateInitialSpecialObjects() {
+        int specialObjectWidth = 30;
+        int specialObjectHeight = 30;
+        int specialObjectSpacingX = 200;
+        Random random = new Random();
+
+        for (int i = 0; i < 2; i++) {
+            int specialObjectX = gamePanel.playerX + i * specialObjectSpacingX;
+            int specialObjectY = random.nextInt(51) + 200; // Ajusta según la altura deseada de los objetos especiales
+
+            SpecialObject newSpecial = SpecialObjectFactory.createSpecialObject(specialObjectX, specialObjectY,
+                    specialObjectWidth, specialObjectHeight);
+            gamePanel.specialObjects.add(newSpecial);
+            gamePanel.gameObjects.add(newSpecial);
         }
     }
 
