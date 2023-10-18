@@ -15,6 +15,7 @@ import Objetos.SpecialObject;
 import Objetos.SpecialObjectFactory;
 import Objetos.Object;
 import modelo.GameObject;
+import modelo.game;
 import Objetos.ObjectFactory;
 
 import java.awt.*;
@@ -52,9 +53,15 @@ public class GamePanel extends JPanel {
     private int backgroundOffsetX = 0;
     private List<SpecialObject> specialObjects = new ArrayList<>();
     private List<GameObject> gameObjects = new ArrayList<>();
-
+    private game game;
+    private Controller controller = new Controller(this);
     // Panel Inicial
     public GamePanel() {
+<<<<<<< HEAD
+=======
+        game = new game();
+        Random random = new Random();
+>>>>>>> desarrollo
         String imagePath = "src/sprite/bg.jpg";
         backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
@@ -92,7 +99,7 @@ public class GamePanel extends JPanel {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                handleKeyRelease(e);
+                controller.handleKeyRelease(e);
             }
         });
 
@@ -125,7 +132,9 @@ public class GamePanel extends JPanel {
 
         }
     }
-
+    public game getGame() {
+        return game;
+    }
     // Método para obtener un árbol o una nube de manera aleatoria
     private Object getRandomTreeOrCloud(int x, int y, int width, int height) {
         Random random = new Random();
@@ -329,6 +338,7 @@ public class GamePanel extends JPanel {
     }
 
     // Keys
+<<<<<<< HEAD
     private void handleKeyRelease(KeyEvent e) {
         int keyCode = e.getKeyCode();
         pressedKeys.remove(keyCode);
@@ -339,8 +349,11 @@ public class GamePanel extends JPanel {
         }
     }
 
+=======
+    
+>>>>>>> desarrollo
     // Update enemigos iniciales
-    private void updatePlayerSpeed() {
+    public void updatePlayerSpeed() {
         playerSpeedX = 0;
         playerSpeedY = 0;
 

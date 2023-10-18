@@ -7,38 +7,38 @@ import Objetos.Enemy;
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Controller {
     private game game;
     private GamePanel gamePanel;
-    private List<Enemy> enemies = new ArrayList<>();
+    private Set<Integer> pressedKeys = new HashSet<>();
 
-    public Controller(game game, GamePanel gamePanel) {
-        this.game = game;
+    // Constructor que acepta un GamePanel
+    public Controller(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
 
     }
 
     public void startGame() {
         // Inicia el juego, configura el panel, etc.
-        // Puedes poner aquí el código que tienes en el método main
-        
 
+        // Puedes obtener el objeto game usando el método getGame()
+        game game = gamePanel.getGame();
+
+        // Resto del código...
     }
 
     public void handleKeyPress(int keyCode) {
         // Lógica para manejar la tecla presionada
         // Actualiza el modelo y llama a gamePanel.actualizar
+    }
 
-        if (keyCode == KeyEvent.VK_SPACE) {
-            // Invertir la dirección de todos los enemigos
-            for (Enemy enemy : enemies) {
-                enemy.reverseDirection();
-            }
-        }
-
+    public void handleKeyRelease(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        pressedKeys.remove(keyCode);
+        gamePanel.updatePlayerSpeed();
     }
 
     // Otros métodos para manejar eventos
