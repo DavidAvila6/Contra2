@@ -188,7 +188,7 @@ public class GamePanel extends JPanel {
         for (Bala bala : balas) {
             for (Enemy enemy : enemies) {
                 if (balaColisionaConEnemy(bala, enemy)) {
-                    // Agrega la bala y el enemigo a las listas de elementos a eliminar
+                    // Agrega la bala y el enemigo a las listas awdadde elementos a eliminar
                     balasParaEliminar.add(bala);
                     enemigosParaEliminar.add(enemy);
                     gameObjects.remove(enemy);
