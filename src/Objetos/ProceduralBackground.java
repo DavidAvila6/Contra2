@@ -6,9 +6,12 @@ import javax.swing.ImageIcon;
 public class ProceduralBackground {
     private Image backgroundImage;
 
-    public ProceduralBackground(String imagePath) {
-        // Cargar la imagen de fondo desde el archivo
+    public ProceduralBackground(String imagePath, int width, int height) {
+        // Cargar la imagen original
         loadImage(imagePath);
+
+        // Redimensionar la imagen para que coincida con las dimensiones del juego
+        backgroundImage = backgroundImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
     }
 
     private void loadImage(String imagePath) {
@@ -24,4 +27,5 @@ public class ProceduralBackground {
         g.drawImage(backgroundImage, x, y, null);
     }
 }
+
 
