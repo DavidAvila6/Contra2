@@ -17,6 +17,7 @@ import Objetos.Object;
 import modelo.GameObject;
 import modelo.game;
 import Objetos.ObjectFactory;
+import controlador.objetoController;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -55,6 +56,7 @@ public class GamePanel extends JPanel {
     public List<GameObject> gameObjects = new ArrayList<>();
     public game game;
     public Controller controller = new Controller(this);
+    public objetoController obcontroller = new objetoController(this);
 
     // Panel Inicial
     public GamePanel() {
@@ -64,8 +66,8 @@ public class GamePanel extends JPanel {
         backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
         generateInitialSpecialObjects();
-        controller.generateInitialTrees();
-        generateInitialPlatforms();
+        obcontroller.generateInitialTrees();
+        obcontroller.generateInitialPlatforms();
         generateInitialEnemies();
 
         Timer timer = new Timer(10, new ActionListener() {
@@ -142,43 +144,6 @@ public class GamePanel extends JPanel {
     }
 
     // Inicializa Plataformas
-    public void generateInitialPlatforms() {
-        int bluePlatformWidth = 350; // Ancho de las plataformas azules
-        int bluePlatformHeight = 10;
-        int bluePlatformSpacingX = 400;
-        Random random = new Random();
-
-        for (int i = 0; i < 4; i++) {
-            int bluePlatformX = playerX + i * bluePlatformSpacingX;
-            int bluePlatformY = random.nextInt(51) + 500; // Ajusta según la altura deseada de las plataformas azules
-            Platform newPlatform = new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight,
-                    Color.BLUE);
-            platforms.add(newPlatform);
-            gameObjects.add(newPlatform);
-        }
-
-        int purplePlatformWidth = 250; // Ancho de las plataformas moradas
-        int purplePlatformHeight = 20;
-        int purplePlatformSpacingX = 600; // Ajusta el espaciado entre las plataformas moradas
-
-        for (int i = 0; i < 5; i++) {
-            int purplePlatformX = playerX + i * purplePlatformSpacingX;
-            int purplePlatformY;
-
-            // Ajusta según la altura deseada de las plataformas moradas y su posición en la
-            // ventana
-            if (i % 2 == 0) {
-                purplePlatformY = random.nextInt(51) + 350;
-            } else {
-                purplePlatformY = random.nextInt(51) + 150; // Coloca las plataformas moradas más arriba
-            }
-            Platform newPlatform = new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth,
-                    purplePlatformHeight,
-                    Color.MAGENTA);
-            platforms.add(newPlatform);
-            gameObjects.add(newPlatform);
-        }
-    }
 
     // Método para generar enemigos iniciales
     // Método para generar enemigos iniciales
@@ -573,8 +538,8 @@ public class GamePanel extends JPanel {
         // Restablece otras variables y objetos del juego según sea necesario
 
         // Vuelve a generar árboles, plataformas, enemigos, etc.
-        controller.generateInitialTrees();
-        generateInitialPlatforms();
+        obcontroller.generateInitialTrees();
+        obcontroller.generateInitialPlatforms();
         generateInitialEnemies();
 
         // Reinicia cualquier otra lógica de juego que necesites
