@@ -27,6 +27,7 @@ public class Main {
         startPanel.add(startButton);
         startFrame.add(startPanel);
         startFrame.setVisible(true);
+        startFrame.setLocationRelativeTo(null);
     }
 
     // Esta función inicia el juego
@@ -35,11 +36,13 @@ public class Main {
         Controller controller = new Controller(gamePanel);
 
         SwingUtilities.invokeLater(() -> {
-            JFrame gameFrame = new JFrame("Contra-like Game");
+            JFrame gameFrame = new JFrame("TRACON");
             gameFrame.setSize(1600, 630);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameFrame.add(gamePanel);
             gameFrame.setVisible(true);
+            gameFrame.setLocationRelativeTo(null);
+            gameFrame.setResizable(false);
         });
     }
 }
