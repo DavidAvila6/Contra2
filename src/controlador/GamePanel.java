@@ -27,8 +27,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import Objetos.Character.Character;
+import Objetos.Character.Character1Factory;
+import Objetos.Character.Character2Factory;
+import Objetos.Character.CharacterFactory;
 
 public class GamePanel extends JPanel {
+    private Character c;
     public int playerX = 50;
     public int playerY = 300;
     public int playerWith = 50;
@@ -39,6 +44,7 @@ public class GamePanel extends JPanel {
     public int playerSpeedY = 0 - jumpBoost;
     public Color playerColor = Color.RED; // o cualquier otro color predeterminado
     public int playerLives = 3;
+    public Image pahtimagen;
 
     public int backgroundSpeed = 2;
     public Set<Integer> pressedKeys = new HashSet<>();
@@ -65,7 +71,9 @@ public class GamePanel extends JPanel {
     List<Enemy> enemigosParaEliminar = new ArrayList<>();
 
     // Panel Inicial
-    public GamePanel() {
+    public GamePanel(int x) {
+        
+
         game = new game();
         Random random = new Random();
         proceduralBackground = new ProceduralBackground("Contra2\\src\\sprite\\bg.jpg", 1600, 630);
@@ -74,6 +82,18 @@ public class GamePanel extends JPanel {
         objcontroller.generateInitialTrees();
         objcontroller.generateInitialPlatforms();
         EnemyController.generateInitialEnemies();
+        c=initializeCharacter(x);
+        playerX = c.getPlayerX();
+        playerY = c.getPlayerY();
+        playerWith = c.getPlayerWidth();
+        playerHeigh = c.getPlayerHeight();
+        speedBoost = c.getSpeedBoost();
+        playerSpeedX = c.getPlayerSpeedX() + speedBoost;
+        jumpBoost = c.getJumpBoost();
+        playerSpeedY = c.getPlayerSpeedY() - jumpBoost;
+        playerColor = c.getPlayerColor(); // o cualquier otro color predeterminado
+        playerLives = c.getPlayerLives();
+        pahtimagen=c.getImagen();
 
         Timer timer = new Timer(10, new ActionListener() {
             @Override
@@ -85,6 +105,8 @@ public class GamePanel extends JPanel {
 
             }
         });
+
+        
         Timer specialObjectTimer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -119,6 +141,20 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 5; i++) {
             trees.add(ObjectFactory.getObject("oak"));
         }
+    }
+
+    private Character initializeCharacter(int x) {
+        CharacterFactory characterFactory = null;
+    
+            if (x == 1) {
+                characterFactory = new Character1Factory();
+            } else if (x == 2) {
+                characterFactory = new Character2Factory();
+            }
+    
+            c = characterFactory.createPlayerCharacter();
+            
+            return c;
     }
 
     public void KeyPres(KeyEvent e) {
@@ -408,8 +444,7 @@ public class GamePanel extends JPanel {
         drawProceduralBackground(g);
 
         // Dibujar los elementos del juego
-        g.setColor(playerColor);
-        g.fillRect(playerX, playerY, playerWith, playerHeigh);
+        g.drawImage(pahtimagen, playerX, playerY, playerWith+20,playerHeigh+20,null);
         g.setColor(Color.BLACK);
         g.drawString("Vidas: ", 10, 20);
 

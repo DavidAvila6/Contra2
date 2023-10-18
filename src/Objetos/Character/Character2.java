@@ -2,16 +2,9 @@ package Objetos.Character;
 
 public class Character2 extends Character {
 
-    @Override
-    public void jump() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'jump'");
-    }
+    public Character2(){
+        setImagen("Contra2\\src\\sprite\\pngwing.com (1).png");
 
-    @Override
-    public void attack() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attack'");
+
     }
-    
 }
