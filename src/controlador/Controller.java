@@ -16,21 +16,11 @@ public class Controller {
     private game game;
     private GamePanel gamePanel;
     private Set<Integer> pressedKeys = new HashSet<>();
-    public List<Object> trees = new ArrayList<>();
 
     // Constructor que acepta un GamePanel
     public Controller(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
 
-    }
-
-    public void startGame() {
-        // Inicia el juego, configura el panel, etc.
-
-        // Puedes obtener el objeto game usando el método getGame()
-        game game = gamePanel.getGame();
-
-        // Resto del código...
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -52,26 +42,4 @@ public class Controller {
         gamePanel.updatePlayerSpeed();
     }
 
-    public void generateInitialTrees() {
-        trees.clear(); // Limpiar árboles existentes
-
-        int treeHeight = 100; // Ajusta según el tamaño de tus árboles
-        int treeWidth = 50; // Ajusta según el tamaño de tus árboles
-        int treeSpacingX = 200; // Espaciado entre árboles (ajusta según tus necesidades)
-
-        // Generar árboles o nubes en posiciones aleatorias cerca de la altura inicial
-        // del jugador
-        for (int i = 0; i < 5; i++) {
-            int treeX = i * treeSpacingX;
-            int treeY = gamePanel.getHeight() - treeHeight; // Ajustar la altura de los árboles según la posición
-                                                            // vertical del
-            // jugador
-
-            // Agrega árboles o nubes aleatoriamente
-            Object newTree = gamePanel.getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
-
-            trees.add(newTree);
-
-        }
-    }
 }
