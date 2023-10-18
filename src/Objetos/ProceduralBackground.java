@@ -1,41 +1,31 @@
 package Objetos;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.Random;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class ProceduralBackground {
     private Image backgroundImage;
-    private int backgroundWidth;
-    private int backgroundHeight;
-    private int tileSize = 200;  // Ajusta el tamaño de cada "tile" del fondo
 
-    public ProceduralBackground(int width, int height) {
-        backgroundWidth = width;
-        backgroundHeight = height;
-        generateBackground();
+    public ProceduralBackground(String imagePath, int width, int height) {
+        // Cargar la imagen original
+        loadImage(imagePath);
+
+        // Redimensionar la imagen para que coincida con las dimensiones del juego
+        backgroundImage = backgroundImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
     }
 
-    private void generateBackground() {
-        // Crear una imagen de fondo procedural
-        backgroundImage = new BufferedImage(backgroundWidth, backgroundHeight, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = (Graphics2D) backgroundImage.getGraphics();
-
-        Random random = new Random();
-
-        // Generar colores aleatorios para las partes del fondo
-        for (int x = 0; x < backgroundWidth; x += tileSize) {
-            for (int y = 0; y < backgroundHeight; y += tileSize) {
-                int red = random.nextInt(256);
-                int green = random.nextInt(256);
-                int blue = random.nextInt(256);
-                g.setColor(new Color(red, green, blue));
-                g.fillRect(x, y, tileSize, tileSize);
-            }
-        }
+    private void loadImage(String imagePath) {
+        ImageIcon icon = new ImageIcon(imagePath);
+        backgroundImage = icon.getImage();
     }
 
     public Image getBackgroundImage() {
         return backgroundImage;
     }
+
+    public void draw(Graphics g, int x, int y) {
+        g.drawImage(backgroundImage, x, y, null);
+    }
 }
+
+
