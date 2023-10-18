@@ -30,9 +30,17 @@ public class Controller {
         // Resto del código...
     }
 
-    public void handleKeyPress(int keyCode) {
-        // Lógica para manejar la tecla presionada
-        // Actualiza el modelo y llama a gamePanel.actualizar
+    public void handleKeyPress(KeyEvent e, int playerY, int playerSpeedY, int jumpBoost, int height) {
+        int keyCode = e.getKeyCode();
+        pressedKeys.add(keyCode);
+        gamePanel.updatePlayerSpeed();
+
+        if (keyCode == KeyEvent.VK_UP) {
+            // Permitir saltar en cualquier momento
+            if (playerY == height - 50) {
+                playerSpeedY = -15 - jumpBoost;
+            }
+        }
     }
 
     public void handleKeyRelease(KeyEvent e) {

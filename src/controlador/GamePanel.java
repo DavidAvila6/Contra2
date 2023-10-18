@@ -55,13 +55,11 @@ public class GamePanel extends JPanel {
     private List<GameObject> gameObjects = new ArrayList<>();
     private game game;
     private Controller controller = new Controller(this);
+
     // Panel Inicial
     public GamePanel() {
-<<<<<<< HEAD
-=======
         game = new game();
         Random random = new Random();
->>>>>>> desarrollo
         String imagePath = "src/sprite/bg.jpg";
         backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
@@ -94,7 +92,7 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                handleKeyPress(e);
+                controller.handleKeyPress(e, playerY, playerSpeedY, jumpBoost, getHeight());
             }
 
             @Override
@@ -108,6 +106,10 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 5; i++) {
             trees.add(ObjectFactory.getObject("oak"));
         }
+    }
+
+    public void KeyPres(KeyEvent e) {
+        controller.handleKeyPress(e, playerY, playerSpeedY, jumpBoost, getHeight());
     }
 
     // Inicializa Arboles
@@ -132,9 +134,11 @@ public class GamePanel extends JPanel {
 
         }
     }
+
     public game getGame() {
         return game;
     }
+
     // Método para obtener un árbol o una nube de manera aleatoria
     private Object getRandomTreeOrCloud(int x, int y, int width, int height) {
         Random random = new Random();
@@ -324,34 +328,9 @@ public class GamePanel extends JPanel {
     }
 
     // Keys
-    private void handleKeyPress(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        pressedKeys.add(keyCode);
-        updatePlayerSpeed();
-
-        if (keyCode == KeyEvent.VK_UP) {
-            // Permitir saltar en cualquier momento
-            if (playerY == getHeight() - 50) {
-                playerSpeedY = -15 - jumpBoost;
-            }
-        }
-    }
 
     // Keys
-<<<<<<< HEAD
-    private void handleKeyRelease(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        pressedKeys.remove(keyCode);
-        updatePlayerSpeed();
 
-        if (keyCode == KeyEvent.VK_LEFT) {
-            playerSpeedX = 0; // Detener el movimiento hacia la izquierda cuando se suelta la tecla
-        }
-    }
-
-=======
-    
->>>>>>> desarrollo
     // Update enemigos iniciales
     public void updatePlayerSpeed() {
         playerSpeedX = 0;

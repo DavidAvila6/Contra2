@@ -10,14 +10,14 @@ import java.awt.event.KeyEvent;
 
 public class Main {
     public static void main(String[] args) {
-    GamePanel gamePanel = new GamePanel();
-    Controller controller = new Controller(gamePanel);
+        GamePanel gamePanel = new GamePanel();
+        Controller controller = new Controller(gamePanel);
 
         // Asignar el controlador como escuchador de eventos
         gamePanel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                controller.handleKeyPress(e.getKeyCode());
+                gamePanel.KeyPres(e);
             }
 
             @Override
