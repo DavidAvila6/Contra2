@@ -65,9 +65,7 @@ public class GamePanel extends JPanel {
         Random random = new Random();
         proceduralBackground = new ProceduralBackground("C:\\Users\\Exito\\OneDrive\\Documentos\\Contra2\\Contra2\\src\\sprite\\bg.jpg",1600,630);
 
-        generateInitialSpecialObjects();
-        controller.generateInitialTrees();
-        generateInitialPlatforms();
+      
         EnemyController.generateInitialEnemies();
 
         Timer timer = new Timer(10, new ActionListener() {
