@@ -23,7 +23,7 @@ public class ObjectFactory {
     public static void loadCache() {
         // Carga inicial de diferentes tipos de objetos en el cache
 
-        Image oakImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+        Image oakImage = new ImageIcon("src\\sprite\\bala.jpg").getImage();
         OakTree oakObject = new OakTree(0, 0, 0, 0, oakImage);
         objectCache.put("oak", oakObject);
 
