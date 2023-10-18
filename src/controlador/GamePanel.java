@@ -76,7 +76,7 @@ public class GamePanel extends JPanel {
 
         game = new game();
         Random random = new Random();
-        proceduralBackground = new ProceduralBackground("src\\sprite\\fondo.png", 1600, 630);
+        proceduralBackground = new ProceduralBackground("sprite\\fondo.png", 1600, 630);
 
         objcontroller.generateInitialSpecialObjects();
         objcontroller.generateInitialTrees();

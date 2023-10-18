@@ -59,7 +59,7 @@ public class EnemyController {
         for (int i = 0; i < 5; i++) {
             int enemyX = random.nextInt(200) + i * enemySpacingX+a; // Ajusta según el rango deseado
             int enemyY = random.nextInt(51) + 475; // Ajusta según la altura deseada de los enemigos
-            String imagePath = "src\\sprite\\enemy.gif";
+            String imagePath = "sprite\\enemy.gif";
             Enemy newEnemy = EnemyFactory.getEnemy("tipo_enemigo", enemyX, enemyY, enemyWidth, enemyHeight, imagePath, enemySpeed, 0);
             gamePanel.enemies.add(newEnemy);
             gamePanel.gameObjects.add(newEnemy);
