@@ -24,8 +24,10 @@ import modelo.game;
 public class EnemyController {
     private game game;
     private GamePanel gamePanel;
-    private Set<Integer> pressedKeys = new HashSet<>();
+    
     public List<Enemy> enemies = new ArrayList<>();
+    public int enemySpeed = 3;
+    public int enemyGravity = 1;
     
     // Constructor que acepta un GamePanel
     public EnemyController(GamePanel gamePanel) {
@@ -53,7 +55,7 @@ public class EnemyController {
             int enemyY = random.nextInt(51) + 475; // Ajusta según la altura deseada de los enemigos
             Enemy newEnemy = new Enemy(enemyX, enemyY
             , enemyWidth, enemyHeight
-            , Color.BLACK, gamePanel.enemySpeed, 0);
+            , Color.BLACK, enemySpeed, 0);
             gamePanel.enemies.add(newEnemy);
             gamePanel.gameObjects.add(newEnemy);
         }
@@ -71,7 +73,7 @@ public class EnemyController {
             }
 
             // Aplica la gravedad a la velocidad vertical
-            enemy.setEnemySpeedY(enemy.getEnemySpeedY() + gamePanel.enemyGravity);
+            enemy.setEnemySpeedY(enemy.getEnemySpeedY() + enemyGravity);
 
             // Mueve los enemigos en función de sus velocidades
             enemy.setX(enemy.getX() + enemy.getEnemySpeedX());
@@ -79,9 +81,9 @@ public class EnemyController {
 
             // Mueve los enemigos
             if (gamePanel.movingRight) {
-                enemy.setX(enemy.getX() + gamePanel.enemySpeed);
+                enemy.setX(enemy.getX() + enemySpeed);
             } else {
-                enemy.setX(enemy.getX() - gamePanel.enemySpeed);
+                enemy.setX(enemy.getX() - enemySpeed);
             }
 
             // Verifica si el enemigo alcanzó el límite derecho o izquierdo

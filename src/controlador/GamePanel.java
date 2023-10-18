@@ -46,8 +46,7 @@ public class GamePanel extends JPanel {
     public Image backgroundImage;
     public List<Platform> platforms = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
-    public int enemySpeed = 3;
-    public int enemyGravity = 1; // Ajusta la fuerza de la gravedad según sea necesario
+     // Ajusta la fuerza de la gravedad según sea necesario
     public long timeSinceDirectionChange = System.currentTimeMillis();
     public static final int TIME_TO_CHANGE_DIRECTION = 10;
     public ProceduralBackground proceduralBackground;
