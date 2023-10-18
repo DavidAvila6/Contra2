@@ -2,6 +2,7 @@ package modelo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 
 public class GameObject {
@@ -11,7 +12,7 @@ public class GameObject {
     private int height;
     private Color color;
 
-    public GameObject(int x, int y, int width, int height, Color color) {
+    public GameObject(int x, int y, int width, int height, Image image) {
         this.x = x;
         this.y = y;
         this.width = width;

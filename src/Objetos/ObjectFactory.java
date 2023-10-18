@@ -23,11 +23,11 @@ public class ObjectFactory {
     public static void loadCache() {
         // Carga inicial de diferentes tipos de objetos en el cache
 
-        Image oakImage = new ImageIcon("src\\sprite\\bala.jpg").getImage();
+        Image oakImage = new ImageIcon("sprite\\bala.jpg").getImage();
         OakTree oakObject = new OakTree(0, 0, 0, 0, oakImage);
         objectCache.put("oak", oakObject);
 
-        Image cloudImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+        Image cloudImage = new ImageIcon("sprite\\pngwing.png").getImage();
         Cloud cloudObject = new Cloud(0, 0, 0, 0, cloudImage);
         objectCache.put("cloud", cloudObject);
 
@@ -36,7 +36,7 @@ public class ObjectFactory {
 
     // Nueva fábrica para crear nubes
     public static Cloud createCloud(int x, int y, int width, int height) {
-        Image cloudImage = new ImageIcon("src\\sprite\\cloud.png").getImage();
+        Image cloudImage = new ImageIcon("sprite\\cloud.png").getImage();
         return new Cloud(x, y, width, height, cloudImage);
     }
 

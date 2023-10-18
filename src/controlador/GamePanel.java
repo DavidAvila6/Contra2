@@ -67,7 +67,7 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         game = new game();
         Random random = new Random();
-        proceduralBackground = new ProceduralBackground("src\\sprite\\bg.jpg", 1600, 630);
+        proceduralBackground = new ProceduralBackground("sprite\\bg.jpg", 1600, 630);
 
         objcontroller.generateInitialSpecialObjects();
         objcontroller.generateInitialTrees();
@@ -155,7 +155,7 @@ public class GamePanel extends JPanel {
 
     public void dispararBala() {
         // Crea una nueva bala en la posición actual del jugador
-        Image balaImage = new ImageIcon("src\\sprite\\bala.jpg").getImage();
+        Image balaImage = new ImageIcon("sprite\\bala.jpg").getImage();
         Bala bala = new Bala(playerX, playerY, 10, 5, balaImage);
         balas.add(bala);
         
@@ -257,7 +257,7 @@ public class GamePanel extends JPanel {
                 platform.setPlatformX(getWidth() + new Random().nextInt(200));
 
                 // Ajusta la altura de las plataformas según el tipo
-                if (platform.getPlatformColor() == Color.MAGENTA) {
+                if (platform.getColor() == Color.MAGENTA) {
                     // Si es morada, aparece en Y: random.nextInt(51) + 350
                     platform.setPlatformY(random.nextInt(51) + 350);
                 } else {

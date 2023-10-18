@@ -58,10 +58,10 @@ public class objetoController {
         for (int i = 0; i < 4; i++) {
             int bluePlatformX = gamePanel.playerX + i * bluePlatformSpacingX;
             int bluePlatformY = random.nextInt(51) + 500; // Ajusta según la altura deseada de las plataformas azules
-            Platform newPlatform = new Platform(bluePlatformX, bluePlatformY, bluePlatformWidth, bluePlatformHeight,
-                    Color.BLUE);
-            gamePanel.platforms.add(newPlatform);
-            gamePanel.gameObjects.add(newPlatform);
+            Image platImage = new ImageIcon("sprite\\plataforma.png").getImage();
+            Platform plataform = new Platform(0, 0, 0, 0, platImage);
+            System.out.println("hola mundo");
+            
         }
 
         int purplePlatformWidth = 250; // Ancho de las plataformas moradas
@@ -79,11 +79,9 @@ public class objetoController {
             } else {
                 purplePlatformY = random.nextInt(51) + 150; // Coloca las plataformas moradas más arriba
             }
-            Platform newPlatform = new Platform(purplePlatformX, purplePlatformY, purplePlatformWidth,
-                    purplePlatformHeight,
-                    Color.MAGENTA);
-            gamePanel.platforms.add(newPlatform);
-            gamePanel.gameObjects.add(newPlatform);
+            Image platImage = new ImageIcon("sprite\\plataforma.png").getImage();
+            Platform plataform = new Platform(0, 0, 0, 0, platImage);
+
         }
     }
 
@@ -93,14 +91,14 @@ public class objetoController {
 
         switch (objectType) {
             case 0:
-                Image oakImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+                Image oakImage = new ImageIcon("sprite\\pngwing.png").getImage();
                 
                 return new OakTree(x, y, 580, 800, oakImage);
                 
                 
             case 1:
                 // Devuelve una nube con dimensiones específicas
-                Image cloudImage = new ImageIcon("src\\sprite\\cloud.png").getImage();
+                Image cloudImage = new ImageIcon("sprite\\cloud.png").getImage();
                 Cloud cloud = new Cloud(x, y, 100, 70, cloudImage); // Ajusta las dimensiones según tus necesidades
                  // Establece el color de la nube
                 return cloud;

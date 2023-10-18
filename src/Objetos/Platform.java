@@ -1,27 +1,34 @@
 package Objetos;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 
 import modelo.GameObject;
 
 public class Platform  extends GameObject {
+    private Image Image;
     private int platformX;
     private int platformY;
     private int platformWidth;
     private int platformHeight;
-    private Color platformColor;
 
-    public Platform(int x, int y, int width, int height, Color color) {
-        super(x, y, width, height, color);
+    public Platform(int x, int y, int width, int height, Image Image) {
+        super(x, y, width, height, Image);
         this.platformX = x;
         this.platformY = y;
         this.platformWidth = width;
         this.platformHeight = height;
-        this.platformColor = color;
+        this.Image = Image;
     }
 
     // Implementación de métodos de GameObject
+      public Image getImage() {
+        return Image;
+    }
+
+    public void setImage(Image image) {
+        Image = image;
+    }
 
     @Override
     public int getX() {
@@ -43,15 +50,11 @@ public class Platform  extends GameObject {
         return platformHeight;
     }
 
-    @Override
-    public Color getColor() {
-        return platformColor;
-    }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(getColor());
-        g.fillRect(getX(), getY(), getWidth(), getHeight());
+        // Dibuja la imagen del enemigo en lugar de un rectángulo de color
+        g.drawImage(getImage(), getX(), getY(), getWidth(), getHeight(), null);
     }
 
     
@@ -97,16 +100,10 @@ public class Platform  extends GameObject {
         this.platformHeight = platformHeight;
     }
 
-    public Color getPlatformColor() {
-        return platformColor;
-    }
-
-    public void setPlatformColor(Color platformColor) {
-        this.platformColor = platformColor;
-    }
-
     @Override
     public Platform clone() throws CloneNotSupportedException {
         return (Platform) super.clone();
     }
+
+  
 }

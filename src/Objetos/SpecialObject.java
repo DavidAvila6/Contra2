@@ -13,7 +13,7 @@ public class SpecialObject extends GameObject {
     private Color color;
 
     public SpecialObject(int x, int y, int width, int height, Color color) {
-        super(x, y, width, height, color);
+        super(x, y, width, height);
         this.x = x;
         this.y = y;
         this.width = width;

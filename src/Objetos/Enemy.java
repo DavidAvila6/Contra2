@@ -1,24 +1,35 @@
 package Objetos;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 import modelo.GameObject;
 
 public class Enemy extends GameObject {
-    private int enemySpeedX; // Nueva propiedad para la velocidad horizontal
-    private int enemySpeedY; // Nueva propiedad para la velocidad vertical
-    private long timeSinceDirectionChange; // Tiempo del último cambio de dirección
-    private static final long TIME_TO_CHANGE_DIRECTION = 2000; // 2000 milisegundos (2 segundos)
+    private int enemySpeedX;
+    private int enemySpeedY;
+    private long timeSinceDirectionChange;
+    private static final long TIME_TO_CHANGE_DIRECTION = 2000;
+    private Image enemyImage; // Nueva propiedad para la imagen del enemigo
 
-    public Enemy(int x, int y, int width, int height, Color color, int speedX, int speedY) {
-        super(x, y, width, height, color);
+    public Enemy(int x, int y, int width, int height, String imagePath, int speedX, int speedY) {
+        super(x, y, width, height);
         this.enemySpeedX = speedX;
         this.enemySpeedY = speedY;
         this.timeSinceDirectionChange = System.currentTimeMillis();
+        this.enemyImage = new ImageIcon(imagePath).getImage(); // Cargar la imagen desde la ruta
     }
 
-    // Getters y setters de las propiedades específicas de Enemy
+    // Resto de los métodos y getters/setters según tus necesidades
+
+    public Image getEnemyImage() {
+        return enemyImage;
+    }
+
+    public void setEnemyImage(Image enemyImage) {
+        this.enemyImage = enemyImage;
+    }
 
     public int getEnemySpeedX() {
         return enemySpeedX;
@@ -59,25 +70,24 @@ public class Enemy extends GameObject {
                getY() < otherObject.getY() + otherObject.getHeight() &&
                getY() + getHeight() > otherObject.getY();
     }
-    
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(getColor());
-        g.fillRect(getX(), getY(), getWidth(), getHeight());
+        // Dibuja la imagen del enemigo en lugar de un rectángulo de color
+        g.drawImage(getEnemyImage(), getX(), getY(), getWidth(), getHeight(), null);
     }
 
     @Override
     public Enemy clone() throws CloneNotSupportedException {
-        try {
-            // Copiar primitivos y objetos inmutables directamente
+        
             Enemy clonedEnemy = (Enemy) super.clone();
             // Si tienes objetos mutables, clónalos también
-            clonedEnemy.setColor(new Color(this.getColor().getRGB())); // Copiar Color
-
+            if (getEnemyImage() != null) {
+                clonedEnemy.setEnemyImage(getEnemyImage()); // Copiar la imagen
+            }
+            // Copiar otros campos si son mutables
+    
             return clonedEnemy;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError(); // Esto no debería ocurrir
-        }
+        
     }
 }
