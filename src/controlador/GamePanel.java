@@ -59,8 +59,7 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         game = new game();
         Random random = new Random();
-        proceduralBackground = new ProceduralBackground(800, 600);
-        proceduralBackground.update();
+        proceduralBackground = new ProceduralBackground("C:\\Users\\Exito\\OneDrive\\Documentos\\Contra2\\Contra2\\src\\sprite\\bg.jpg");
 
         generateInitialSpecialObjects();
         generateInitialTrees();
