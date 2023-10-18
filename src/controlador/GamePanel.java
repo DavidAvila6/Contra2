@@ -136,24 +136,6 @@ public class GamePanel extends JPanel {
 
     // Método para obtener un árbol o una nube de manera aleatoria
 
-    public void updatePlayerSpeed() {
-        playerSpeedX = 0;
-        playerSpeedY = 0;
-
-        if (pressedKeys.contains(KeyEvent.VK_LEFT)) {
-            playerSpeedX -= 5 + speedBoost;
-
-        }
-        if (pressedKeys.contains(KeyEvent.VK_RIGHT)) {
-            playerSpeedX += 5 + speedBoost;
-        }
-        if (pressedKeys.contains(KeyEvent.VK_UP)) {
-            if (playerY == getHeight() - 50) {
-                playerSpeedY = -15 - jumpBoost;
-            }
-        }
-    }
-
     public void dispararBala() {
         // Crea una nueva bala en la posición actual del jugador
         Bala bala = new Bala(playerX, playerY, 10, 5);
