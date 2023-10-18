@@ -1,38 +1,45 @@
 
+
 package controlador;
 
-import modelo.game;
-
 import javax.swing.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
-    GamePanel gamePanel = new GamePanel();
-    Controller controller = new Controller(gamePanel);
+        // Crear la ventana de inicio
+        JFrame startFrame = new JFrame("Inicio");
+        startFrame.setSize(800, 400);
+        startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Asignar el controlador como escuchador de eventos
-        gamePanel.addKeyListener(new KeyAdapter() {
+        // Agregar un botón para comenzar el juego
+        JButton startButton = new JButton("Comenzar Juego");
+        startButton.addActionListener(new ActionListener() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                controller.handleKeyPress(e.getKeyCode());
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                // Lógica para keyReleased si es necesaria
+            public void actionPerformed(ActionEvent e) {
+                startFrame.dispose(); // Cerrar la ventana de inicio
+                startGame(); // Iniciar el juego
             }
         });
+
+        JPanel startPanel = new JPanel();
+        startPanel.add(startButton);
+        startFrame.add(startPanel);
+        startFrame.setVisible(true);
+    }
+
+    // Esta función inicia el juego
+    private static void startGame() {
+        GamePanel gamePanel = new GamePanel();
+        Controller controller = new Controller(gamePanel);
 
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Contra-like Game");
-            frame.setSize(1600, 630);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(gamePanel);
-            frame.setVisible(true);
+            JFrame gameFrame = new JFrame("Contra-like Game");
+            gameFrame.setSize(1600, 630);
+            gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            gameFrame.add(gamePanel);
+            gameFrame.setVisible(true);
         });
-
-        controller.startGame();
     }
 }

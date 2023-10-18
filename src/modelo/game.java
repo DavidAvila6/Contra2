@@ -5,8 +5,7 @@ import java.util.List;
 import Objetos.Platform;
 import Objetos.Object;
 
-
-public class game  {
+public class game {
     private List<Object> trees = new ArrayList<>();
     private List<Platform> platform = new ArrayList<>();
     // Otras propiedades y métodos del juego
