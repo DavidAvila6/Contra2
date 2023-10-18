@@ -68,9 +68,8 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         game = new game();
         Random random = new Random();
-        String imagePath = "src/sprite/bg.jpg";
-        backgroundImage = new ImageIcon(imagePath).getImage();
-        proceduralBackground = new ProceduralBackground(800, 600);
+        proceduralBackground = new ProceduralBackground("src\\sprite\\bg.jpg",1600,630);
+
         objcontroller.generateInitialSpecialObjects();
         objcontroller.generateInitialTrees();
         objcontroller.generateInitialPlatforms();
@@ -192,6 +191,7 @@ public class GamePanel extends JPanel {
                     // Agrega la bala y el enemigo a las listas de elementos a eliminar
                     balasParaEliminar.add(bala);
                     enemigosParaEliminar.add(enemy);
+                    gameObjects.remove(enemy);
                 }
             }
         }
