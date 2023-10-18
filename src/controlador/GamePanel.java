@@ -345,38 +345,38 @@ public class GamePanel extends JPanel {
             boolean onPlatform = false;
             // Verifica si hay colisión con el jugador
             if (charcontroller.playerCollidesWithSpecialObject(playerX, playerY, 50, 50, specialObject)) {
-                // Cambia el color del jugador al color del objeto especial
-                if (specialObject.getColor().equals(Color.GREEN)) {
+                // Obtén la ruta de la imagen del objeto especial
+                String imagePath = specialObject.getImagePath();
+            
+                // Cambia el comportamiento según la ruta de la imagen
+                if ("src\\sprite\\p1.png".equals(imagePath)) {
                     playerHeigh = 50;
                     playerWith = 50;
                     speedBoost = 0;
                     jumpBoost = 20;
-                }
-                if (specialObject.getColor().equals(Color.CYAN)) {
+                } else if ("src\\sprite\\p3.png".equals(imagePath)) {
                     playerHeigh = 50;
                     playerWith = 50;
                     speedBoost = 3;
                     jumpBoost = 0;
-                }
-                if (specialObject.getColor().equals(Color.YELLOW)) {
-                    // Ajusta el tamaño del jugador
+                } else if ("src\\sprite\\p2.png".equals(imagePath)) {
                     playerHeigh = 60;
                     playerWith = 60;
                     speedBoost = 0;
                     jumpBoost = 5;
-                    // Duplica la altura (ajusta según tus necesidades)
-                }
-                if (specialObject.getColor().equals(Color.RED)) {
+                } else if ("src\\sprite\\p1.png".equals(imagePath)) {
                     playerHeigh = 50;
                     playerWith = 50;
                     speedBoost = 0;
                     jumpBoost = 0;
                     playerLives += 1;
                 }
+            
                 playerColor = specialObject.getColor();
                 gameObjects.remove(specialObject);
                 specialObject.setX(-200);
             }
+            
             for (Platform platform : platforms) {
                 if (objcontroller.specialObjectCollidesWithPlatform(specialObject, platform)) {
                     // Ajusta la posición del objeto especial según la colisión con la plataforma
