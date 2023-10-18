@@ -41,12 +41,12 @@ public class GamePanel extends JPanel {
     public int backgroundSpeed = 2;
     public Set<Integer> pressedKeys = new HashSet<>();
     public List<Object> trees = new ArrayList<>();
+    
+    public boolean movingRight = true; // Variable para rastrear la dirección de movimiento
     public Image backgroundImage;
     public List<Platform> platforms = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
-    public int enemySpeed = 3;
-    public boolean movingRight = true; // Variable para rastrear la dirección de movimiento
-    public int enemyGravity = 1; // Ajusta la fuerza de la gravedad según sea necesario
+     // Ajusta la fuerza de la gravedad según sea necesario
     public long timeSinceDirectionChange = System.currentTimeMillis();
     public static final int TIME_TO_CHANGE_DIRECTION = 10;
     public ProceduralBackground proceduralBackground;
@@ -55,6 +55,7 @@ public class GamePanel extends JPanel {
     public List<GameObject> gameObjects = new ArrayList<>();
     public game game;
     public Controller controller = new Controller(this);
+    public EnemyController EnemyController = new EnemyController(this);
 
     // Panel Inicial
     public GamePanel() {
@@ -65,15 +66,15 @@ public class GamePanel extends JPanel {
         proceduralBackground = new ProceduralBackground(800, 600);
         backgroundImage = new ImageIcon(imagePath).getImage();
         generateInitialSpecialObjects();
-        generateInitialTrees();
+        controller.generateInitialTrees();
         generateInitialPlatforms();
-        generateInitialEnemies();
+        EnemyController.generateInitialEnemies();
 
         Timer timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 update();
-                updateEnemies();
+                EnemyController.updateEnemies();
 
                 repaint();
 
@@ -114,26 +115,8 @@ public class GamePanel extends JPanel {
     }
 
     // Inicializa Arboles
-    public void generateInitialTrees() {
-        trees.clear(); // Limpiar árboles existentes
-
-        int treeHeight = 100; // Ajusta según el tamaño de tus árboles
-        int treeWidth = 50; // Ajusta según el tamaño de tus árboles
-        int treeSpacingX = 200; // Espaciado entre árboles (ajusta según tus necesidades)
-
-        // Generar árboles o nubes en posiciones aleatorias cerca de la altura inicial
-        // del jugador
-        for (int i = 0; i < 5; i++) {
-            int treeX = i * treeSpacingX;
-            int treeY = getHeight() - treeHeight; // Ajustar la altura de los árboles según la posición vertical del
-                                                  // jugador
-
-            // Agrega árboles o nubes aleatoriamente
-            Object newTree = getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
-
-            trees.add(newTree);
-
-        }
+    public List<Object> getTrees() {
+        return trees;
     }
 
     public game getGame() {
@@ -199,22 +182,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    // Método para generar enemigos iniciales
-    // Método para generar enemigos iniciales
-    public void generateInitialEnemies() {
-        int enemyWidth = 30;
-        int enemyHeight = 30;
-        int enemySpacingX = 200;
-        Random random = new Random();
-
-        for (int i = 0; i < 5; i++) {
-            int enemyX = random.nextInt(200) + i * enemySpacingX; // Ajusta según el rango deseado
-            int enemyY = random.nextInt(51) + 475; // Ajusta según la altura deseada de los enemigos
-            Enemy newEnemy = new Enemy(enemyX, enemyY, enemyWidth, enemyHeight, Color.BLACK, enemySpeed, 0);
-            enemies.add(newEnemy);
-            gameObjects.add(newEnemy);
-        }
-    }
+    
 
     public void generateInitialSpecialObjects() {
         int specialObjectWidth = 30;
@@ -233,100 +201,11 @@ public class GamePanel extends JPanel {
         }
     }
 
-    // Update enemigos iniciales
-    public void updateEnemies() {
-        for (Enemy enemy : enemies) {
-            long currentTime = System.currentTimeMillis();
+    
 
-            // Verifica si ha pasado un cierto tiempo desde el último cambio de dirección
-            if (currentTime - enemy.getTimeSinceDirectionChange() > TIME_TO_CHANGE_DIRECTION) {
-                // Cambia la dirección y reinicia el temporizador
-                enemy.reverseDirection();
-                enemy.setTimeSinceDirectionChange(currentTime);
-            }
+    
 
-            // Aplica la gravedad a la velocidad vertical
-            enemy.setEnemySpeedY(enemy.getEnemySpeedY() + enemyGravity);
-
-            // Mueve los enemigos en función de sus velocidades
-            enemy.setX(enemy.getX() + enemy.getEnemySpeedX());
-            enemy.setY(enemy.getY() + enemy.getEnemySpeedY());
-
-            // Mueve los enemigos
-            if (movingRight) {
-                enemy.setX(enemy.getX() + enemySpeed);
-            } else {
-                enemy.setX(enemy.getX() - enemySpeed);
-            }
-
-            // Verifica si el enemigo alcanzó el límite derecho o izquierdo
-            if (enemy.getX() > getWidth() && movingRight) {
-                // Si está yendo a la derecha y llegó al límite derecho, cambia la dirección a
-                // izquierda
-                movingRight = false;
-            } else if (enemy.getX() < 0 && !movingRight) {
-                // Si está yendo a la izquierda y llegó al límite izquierdo, cambia la dirección
-                // a derecha
-                movingRight = true;
-            }
-
-            // Aplica la velocidad vertical (gravedad) a la posición vertical
-            enemy.setY(enemy.getY() + enemy.getEnemySpeedY());
-
-            // Verifica colisiones con las plataformas
-            boolean onPlatform = false;
-
-            for (Platform platform : platforms) {
-                if (enemyCollidesWithPlatform(enemy, platform)) {
-                    // Ajusta la posición del enemigo según la colisión con la plataforma
-
-                    adjustEnemyPositionOnCollision(enemy, platform);
-
-                    // Indica que el enemigo está en una plataforma
-                    onPlatform = true;
-                }
-            }
-
-            // Verifica si el enemigo llegó al suelo y no está en una plataforma
-            if (enemy.getY() > getHeight() - enemy.getHeight() && !onPlatform) {
-                enemy.setY(getHeight() - enemy.getHeight()); // Ajusta la posición al suelo
-                enemy.setEnemySpeedY(0); // Detiene la caída
-            }
-            // Mueve los enemigos con el fondo
-            if (playerSpeedX > 0) {
-                enemy.setX(enemy.getX() - playerSpeedX);
-            }
-
-            // Verifica si el enemigo está fuera de la pantalla y reposiciónalo
-            if (enemy.getX() + enemy.getWidth() < 0) {
-                Random random = new Random();
-                // Reposiciona el enemigo fuera del borde derecho de la pantalla
-                enemy.setX(getWidth() + new Random().nextInt(200));
-
-                enemy.setY(random.nextInt(51) + 200); // Ajusta según la altura deseada de los enemigos
-            }
-        }
-    }
-
-    // Colision Enemigo Plataforma
-    public boolean enemyCollidesWithPlatform(Enemy enemy, Platform platform) {
-        return enemy.getX() < platform.getPlatformX() + platform.getPlatformWidth() &&
-                enemy.getX() + enemy.getWidth() > platform.getPlatformX() &&
-                enemy.getY() < platform.getPlatformY() + platform.getPlatformHeight() &&
-                enemy.getY() + enemy.getHeight() > platform.getPlatformY();
-    }
-
-    // Ajusta Posicion de collision enemigos
-    public void adjustEnemyPositionOnCollision(Enemy enemy, Platform platform) {
-        // Ajusta la posición del enemigo para que esté justo encima de la plataforma
-        enemy.setY(platform.getPlatformY() - enemy.getHeight());
-
-        // Detiene el movimiento vertical
-        enemy.setEnemySpeedY(0);
-
-        // Ajusta el movimiento horizontal (invierte la dirección)
-        enemy.setEnemySpeedX(-enemy.getEnemySpeedX());
-    }
+    
 
     // Keys
 
@@ -592,9 +471,9 @@ public class GamePanel extends JPanel {
         // Restablece otras variables y objetos del juego según sea necesario
 
         // Vuelve a generar árboles, plataformas, enemigos, etc.
-        generateInitialTrees();
+        controller.generateInitialTrees();
         generateInitialPlatforms();
-        generateInitialEnemies();
+        EnemyController.generateInitialEnemies();
 
         // Reinicia cualquier otra lógica de juego que necesites
 
