@@ -64,7 +64,7 @@ public class GamePanel extends JPanel {
         backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
         generateInitialSpecialObjects();
-        generateInitialTrees();
+        controller.generateInitialTrees();
         generateInitialPlatforms();
         generateInitialEnemies();
 
@@ -113,26 +113,8 @@ public class GamePanel extends JPanel {
     }
 
     // Inicializa Arboles
-    public void generateInitialTrees() {
-        trees.clear(); // Limpiar árboles existentes
-
-        int treeHeight = 100; // Ajusta según el tamaño de tus árboles
-        int treeWidth = 50; // Ajusta según el tamaño de tus árboles
-        int treeSpacingX = 200; // Espaciado entre árboles (ajusta según tus necesidades)
-
-        // Generar árboles o nubes en posiciones aleatorias cerca de la altura inicial
-        // del jugador
-        for (int i = 0; i < 5; i++) {
-            int treeX = i * treeSpacingX;
-            int treeY = getHeight() - treeHeight; // Ajustar la altura de los árboles según la posición vertical del
-                                                  // jugador
-
-            // Agrega árboles o nubes aleatoriamente
-            Object newTree = getRandomTreeOrCloud(treeX, treeY, treeWidth, treeHeight);
-
-            trees.add(newTree);
-
-        }
+    public List<Object> getTrees() {
+        return trees;
     }
 
     public game getGame() {
@@ -591,7 +573,7 @@ public class GamePanel extends JPanel {
         // Restablece otras variables y objetos del juego según sea necesario
 
         // Vuelve a generar árboles, plataformas, enemigos, etc.
-        generateInitialTrees();
+        controller.generateInitialTrees();
         generateInitialPlatforms();
         generateInitialEnemies();
 
