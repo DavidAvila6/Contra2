@@ -31,7 +31,7 @@ public class objetoController {
 
         int treeHeight = 100; // Ajusta según el tamaño de tus árboles
         int treeWidth = 50; // Ajusta según el tamaño de tus árboles
-        int treeSpacingX = 200; // Espaciado entre árboles (ajusta según tus necesidades)
+        int treeSpacingX = 500; // Espaciado entre árboles (ajusta según tus necesidades)
 
         // Generar árboles o nubes en posiciones aleatorias cerca de la altura inicial
         // del jugador
@@ -94,11 +94,13 @@ public class objetoController {
         switch (objectType) {
             case 0:
                 Image oakImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
-                return new OakTree(x, y, 50, 100, oakImage);
+                
+                return new OakTree(x, y, 580, 800, oakImage);
+                
                 
             case 1:
                 // Devuelve una nube con dimensiones específicas
-                Image cloudImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+                Image cloudImage = new ImageIcon("src\\sprite\\cloud.png").getImage();
                 Cloud cloud = new Cloud(x, y, 100, 70, cloudImage); // Ajusta las dimensiones según tus necesidades
                  // Establece el color de la nube
                 return cloud;

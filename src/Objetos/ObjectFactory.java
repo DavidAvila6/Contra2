@@ -36,7 +36,7 @@ public class ObjectFactory {
 
     // Nueva fábrica para crear nubes
     public static Cloud createCloud(int x, int y, int width, int height) {
-        Image cloudImage = new ImageIcon("src\\sprite\\pngwing.png").getImage();
+        Image cloudImage = new ImageIcon("src\\sprite\\cloud.png").getImage();
         return new Cloud(x, y, width, height, cloudImage);
     }
 

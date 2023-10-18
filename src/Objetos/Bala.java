@@ -13,6 +13,10 @@ public class Bala extends Object {
 
     public Bala(int x, int y, int width, int height, Image balaImage) {
         super(x, y, width, height, balaImage);
+        this.height = height;
+        this.width = width;
+        this.x = x;
+        this.y = y;
         this.balaImage = balaImage;
     }
 
