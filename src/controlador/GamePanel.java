@@ -59,9 +59,9 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         game = new game();
         Random random = new Random();
-        String imagePath = "src/sprite/bg.jpg";
-        backgroundImage = new ImageIcon(imagePath).getImage();
         proceduralBackground = new ProceduralBackground(800, 600);
+        proceduralBackground.update();
+
         generateInitialSpecialObjects();
         generateInitialTrees();
         generateInitialPlatforms();
