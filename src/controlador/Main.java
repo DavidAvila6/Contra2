@@ -33,13 +33,8 @@ public class Main {
         
 
         // Escala las imágenes de los personajes al tamaño deseado
-<<<<<<< HEAD
-        ImageIcon character1Icon = scaleImage("Contra2\\src\\sprite\\pngwing.com.png", 100, 300); // Reemplaza con la ruta correcta
-        ImageIcon character2Icon = scaleImage("Contra2\\src\\sprite\\pngwing.com (1).png", 100, 300); // Reemplaza con la ruta correcta
-=======
         ImageIcon character1Icon = scaleImage("src\\sprite\\pngwing.com.png", 100, 300); // Reemplaza con la ruta correcta
         ImageIcon character2Icon = scaleImage("src\\sprite\\bg.jpg", 100, 100); // Reemplaza con la ruta correcta
->>>>>>> 1d8cdb48cfae3e3f2776aedf9d5de888c43026de
 
         JLabel character1Label = new JLabel(character1Icon);
         JLabel character2Label = new JLabel(character2Icon);
@@ -57,6 +52,8 @@ public class Main {
                 startGameWithCharacter(2);
             }
         });
+          
+
         
         characterPanel.add(character1Label);
         characterPanel.add(character2Label);
