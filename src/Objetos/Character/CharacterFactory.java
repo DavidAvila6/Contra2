@@ -4,3 +4,4 @@ public interface CharacterFactory {
     
         Character createPlayerCharacter();
 }
+ 
