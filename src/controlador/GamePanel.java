@@ -125,24 +125,6 @@ public class GamePanel extends JPanel {
         return game;
     }
 
-    public void updatePlayerSpeed() {
-        playerSpeedX = 0;
-        playerSpeedY = 0;
-
-        if (pressedKeys.contains(KeyEvent.VK_LEFT)) {
-            playerSpeedX -= 5 + speedBoost;
-
-        }
-        if (pressedKeys.contains(KeyEvent.VK_RIGHT)) {
-            playerSpeedX += 5 + speedBoost;
-        }
-        if (pressedKeys.contains(KeyEvent.VK_UP)) {
-            if (playerY == getHeight() - 50) {
-                playerSpeedY = -15 - jumpBoost;
-            }
-        }
-    }
-
     // Update Principal
     public void update() {
         updateSpecialObjects();

@@ -1,6 +1,6 @@
 package controlador;
 
-
+import controlador.GamePanel;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -145,7 +145,6 @@ public class objetoController {
                 specialObject.getY() < platform.getPlatformY() + platform.getPlatformHeight() &&
                 specialObject.getY() + specialObject.getHeight() > platform.getPlatformY();
     }
-
     public void adjustSpecialObjectPositionOnCollision(SpecialObject specialObject, Platform platform) {
         // Ajusta la posición del objeto especial para que esté justo encima de la
         // plataforma

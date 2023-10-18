@@ -24,11 +24,11 @@ import modelo.game;
 public class EnemyController {
     private game game;
     private GamePanel gamePanel;
-    
+
     public List<Enemy> enemies = new ArrayList<>();
     public int enemySpeed = 3;
     public int enemyGravity = 1;
-    
+
     // Constructor que acepta un GamePanel
     public EnemyController(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -53,9 +53,7 @@ public class EnemyController {
         for (int i = 0; i < 5; i++) {
             int enemyX = random.nextInt(200) + i * enemySpacingX; // Ajusta según el rango deseado
             int enemyY = random.nextInt(51) + 475; // Ajusta según la altura deseada de los enemigos
-            Enemy newEnemy = new Enemy(enemyX, enemyY
-            , enemyWidth, enemyHeight
-            , Color.BLACK, enemySpeed, 0);
+            Enemy newEnemy = new Enemy(enemyX, enemyY, enemyWidth, enemyHeight, Color.BLACK, enemySpeed, 0);
             gamePanel.enemies.add(newEnemy);
             gamePanel.gameObjects.add(newEnemy);
         }
@@ -142,6 +140,7 @@ public class EnemyController {
                 enemy.getY() < platform.getPlatformY() + platform.getPlatformHeight() &&
                 enemy.getY() + enemy.getHeight() > platform.getPlatformY();
     }
+
     // Ajusta Posicion de collision enemigos
     public void adjustEnemyPositionOnCollision(Enemy enemy, Platform platform) {
         // Ajusta la posición del enemigo para que esté justo encima de la plataforma
@@ -153,5 +152,5 @@ public class EnemyController {
         // Ajusta el movimiento horizontal (invierte la dirección)
         enemy.setEnemySpeedX(-enemy.getEnemySpeedX());
     }
-    
+
 }

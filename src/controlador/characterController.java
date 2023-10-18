@@ -1,5 +1,7 @@
 package controlador;
 
+import java.awt.event.KeyEvent;
+
 import Objetos.Enemy;
 import Objetos.SpecialObject;
 
@@ -32,6 +34,24 @@ public class characterController {
                 playerX + playerWidth > enemy.getX() &&
                 playerY < enemy.getY() + enemy.getHeight() &&
                 playerY + playerHeight > enemy.getY();
+    }
+
+    public void updatePlayerSpeed() {
+        gamePanel.playerSpeedX = 0;
+        gamePanel.playerSpeedY = 0;
+
+        if (gamePanel.pressedKeys.contains(KeyEvent.VK_LEFT)) {
+            gamePanel.playerSpeedX -= 5 + gamePanel.speedBoost;
+
+        }
+        if (gamePanel.pressedKeys.contains(KeyEvent.VK_RIGHT)) {
+            gamePanel.playerSpeedX += 5 + gamePanel.speedBoost;
+        }
+        if (gamePanel.pressedKeys.contains(KeyEvent.VK_UP)) {
+            if (gamePanel.playerY == gamePanel.getHeight() - 50) {
+                gamePanel.playerSpeedY = -15 - gamePanel.jumpBoost;
+            }
+        }
     }
 
 }
