@@ -1,5 +1,9 @@
 package Objetos.Character;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 public abstract class  Character {        
     private int playerX = 50;
@@ -12,6 +16,16 @@ public abstract class  Character {
     private int playerSpeedY = 0 - jumpBoost;
     private Color playerColor = Color.RED;
     private int playerLives = 3;
+    private Image imagen;
+
+    public Image getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String string) {
+        ImageIcon icon = new ImageIcon(string);
+        imagen = icon.getImage();
+    }
 
     public int getPlayerX() {
         return playerX;
@@ -21,6 +35,7 @@ public abstract class  Character {
         this.playerX = playerX;
     }
 
+    
     public int getPlayerWidth() {
         return playerWidth;
     }
@@ -100,7 +115,5 @@ public abstract class  Character {
         playerY += deltaY;
     }
 
-    public abstract void jump();
-
-    public abstract void attack();
+    
 }

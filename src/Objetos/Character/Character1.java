@@ -1,27 +1,29 @@
 package Objetos.Character;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+
 
 public class Character1 extends Character {
-    private int SpeedBoost = 5;
+    private int SpeedBoost = 0;
+    private Image imagen;
 
     public Character1(){
 
         super();
         setSpeedBoost(SpeedBoost);
+        setPlayerColor(Color.green);
+        setImagen("src\\sprite\\pngwing.com.png");
     }
     
-    @Override
-    public void jump() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'jump'");
     }
-
-    @Override
-    public void attack() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'attack'");
-    }
+    
+   
 
 
 
     
-}
+

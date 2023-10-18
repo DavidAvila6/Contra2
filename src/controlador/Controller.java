@@ -16,17 +16,19 @@ public class Controller {
     private game game;
     private GamePanel gamePanel;
     private Set<Integer> pressedKeys = new HashSet<>();
+    private characterController characterController;
 
     // Constructor que acepta un GamePanel
     public Controller(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+        this.characterController = new characterController(gamePanel);
 
     }
 
     public void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
         gamePanel.pressedKeys.add(keyCode);
-        gamePanel.updatePlayerSpeed();
+        characterController.updatePlayerSpeed();
 
         if (keyCode == KeyEvent.VK_UP) {
             // Permitir saltar en cualquier momento
@@ -39,7 +41,7 @@ public class Controller {
     public void handleKeyRelease(KeyEvent e) {
         int keyCode = e.getKeyCode();
         gamePanel.pressedKeys.remove(keyCode);
-        gamePanel.updatePlayerSpeed();
+        characterController.updatePlayerSpeed();
     }
 
 }
