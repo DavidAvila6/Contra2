@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import Objetos.Bala;
 import Objetos.Cloud;
 import Objetos.Enemy;
 import Objetos.EnemyFactory;
@@ -55,6 +56,10 @@ public class GamePanel extends JPanel {
     private List<GameObject> gameObjects = new ArrayList<>();
     private game game;
     private Controller controller = new Controller(this);
+    private List<Bala> balas = new ArrayList<>();
+    List<Bala> balasParaEliminar = new ArrayList<>();
+    List<Enemy> enemigosParaEliminar = new ArrayList<>();
+
     // Panel Inicial
     public GamePanel() {
         game = new game();
@@ -92,12 +97,19 @@ public class GamePanel extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 handleKeyPress(e);
+
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                 // Se ha presionado la barra espaciadora, dispara una bala
+                dispararBala();
+                }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
                 controller.handleKeyRelease(e);
             }
+            
+
         });
 
         ObjectFactory.loadCache();
@@ -105,6 +117,54 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 5; i++) {
             trees.add(ObjectFactory.getObject("oak"));
         }
+    }
+
+    public void dispararBala() {
+        // Crea una nueva bala en la posición actual del jugador
+        Bala bala = new Bala(playerX, playerY, 10, 5);
+        balas.add(bala);
+    }
+
+    private boolean balaColisionaConEnemy(Bala bala, Enemy enemy) {
+        int balaX = bala.getX();
+        int balaY = bala.getY();
+        int balaWidth = bala.getWidth();
+        int balaHeight = bala.getHeight();
+    
+        int enemyX = enemy.getX();
+        int enemyY = enemy.getY();
+        int enemyWidth = enemy.getWidth();
+        int enemyHeight = enemy.getHeight();
+    
+        return balaX < enemyX + enemyWidth &&
+               balaX + balaWidth > enemyX &&
+               balaY < enemyY + enemyHeight &&
+               balaY + balaHeight > enemyY;
+    }
+
+    private void updateBalas() {
+        // Actualiza la posición de las balas y elimina las que salen de la pantalla
+        List<Bala> balasEliminar = new ArrayList<>();
+        for (Bala bala : balas) {
+            bala.mover(playerSpeedX+10, playerSpeedX-10);
+            if (bala.getX() > getWidth()) {
+                balasEliminar.add(bala);
+            }
+        }
+        for (Bala bala : balas) {
+            for (Enemy enemy : enemies) {
+                if (balaColisionaConEnemy(bala, enemy)) {
+                    // Agrega la bala y el enemigo a las listas de elementos a eliminar
+                    balasParaEliminar.add(bala);
+                    enemigosParaEliminar.add(enemy);
+                }
+            }
+        }
+    
+        // Elimina las balas y enemigos que colisionaron
+        balas.removeAll(balasParaEliminar);
+        enemies.removeAll(enemigosParaEliminar);
+        balas.removeAll(balasEliminar);
     }
 
     // Inicializa Arboles
@@ -357,6 +417,7 @@ public class GamePanel extends JPanel {
 
     // Update Principal
     private void update() {
+        updateBalas();
         updateSpecialObjects();
         Random random = new Random();
         playerSpeedY += 1 ;
@@ -665,6 +726,11 @@ public class GamePanel extends JPanel {
             g.setColor(treeColor);
             g.fillRect(x, y, tree.getWidth(), tree.getHeight());
         }
+        for (Bala bala : balas) {
+            g.setColor(bala.getColor());
+            g.fillRect(bala.getX(), bala.getY(), bala.getWidth(), bala.getHeight());
+        }
+        
 
     }
 
@@ -679,5 +745,9 @@ public class GamePanel extends JPanel {
             drawX += proceduralBackground.getBackgroundImage().getWidth(null);
         }
     }
+
+    // BALAS by JuloXxx
+
+    
 
 }
