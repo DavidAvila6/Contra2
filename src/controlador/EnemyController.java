@@ -49,13 +49,11 @@ public class EnemyController {
         int enemyHeight = 30;
         int enemySpacingX = 200;
         int a = gamePanel.getWidth();
-        
-        
-        
+
         Random random = new Random();
 
         for (int i = 0; i < 5; i++) {
-            int enemyX = random.nextInt(200) + i * enemySpacingX+a; // Ajusta según el rango deseado
+            int enemyX = random.nextInt(200) + i * enemySpacingX + a; // Ajusta según el rango deseado
             int enemyY = random.nextInt(51) + 475; // Ajusta según la altura deseada de los enemigos
             Enemy newEnemy = new Enemy(enemyX, enemyY, enemyWidth, enemyHeight, Color.BLACK, enemySpeed, 0);
             gamePanel.enemies.add(newEnemy);
@@ -64,9 +62,9 @@ public class EnemyController {
     }
 
     public void updateEnemies() {
-        
-        if (gamePanel.enemies.size() ==2 ){
-            
+
+        if (gamePanel.enemies.size() == 2) {
+
             generateInitialEnemies();
         }
         for (Enemy enemy : gamePanel.enemies) {

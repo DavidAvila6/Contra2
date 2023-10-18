@@ -60,6 +60,7 @@ public class GamePanel extends JPanel {
     public objetoController objcontroller = new objetoController(this);
     public EnemyController EnemyController = new EnemyController(this);
     public characterController charcontroller = new characterController(this);
+
     private List<Bala> balas = new ArrayList<>();
     List<Bala> balasParaEliminar = new ArrayList<>();
     List<Enemy> enemigosParaEliminar = new ArrayList<>();
@@ -133,8 +134,6 @@ public class GamePanel extends JPanel {
     public game getGame() {
         return game;
     }
-
-    // Método para obtener un árbol o una nube de manera aleatoria
 
     public void dispararBala() {
         // Crea una nueva bala en la posición actual del jugador
